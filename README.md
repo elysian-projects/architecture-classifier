@@ -1,1 +1,1 @@
-# architecture-classifier
+# Architecture classifier
