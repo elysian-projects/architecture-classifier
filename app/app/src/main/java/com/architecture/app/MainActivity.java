@@ -38,18 +38,17 @@ public class MainActivity extends AppCompatActivity {
         grantPermissions();
 
         _cameraButton.setOnClickListener(
-            view -> setupActivity(MediaStore.ACTION_IMAGE_CAPTURE, RequestCodes.CAMERA)
+            view -> {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, RequestCodes.CAMERA);
+            }
         );
         _galleryButton.setOnClickListener(
-            view -> setupActivity(MediaStore.ACTION_PICK_IMAGES, RequestCodes.GALLERY)
+            view -> {
+                Intent intent = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select picture"), RequestCodes.GALLERY);
+            }
         );
-    }
-
-    private void setupActivity(String intentType, int requestCode) {
-        Intent galleryIntent = new Intent(intentType);
-
-        // FIXME: this method is deprecated, better find a modern approach
-        startActivityForResult(galleryIntent, requestCode);
     }
 
     @SuppressLint("SetTextI18n")
