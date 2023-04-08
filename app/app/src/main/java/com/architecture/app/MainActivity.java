@@ -3,6 +3,7 @@ package com.architecture.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,12 +11,16 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
+import com.architecture.app.permission.Permissions;
 
 public class MainActivity extends AppCompatActivity {
     private Button _cameraButton;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         initializeUI();
+        grantPermissions();
 
         _cameraButton.setOnClickListener(
             view -> setupActivity(MediaStore.ACTION_IMAGE_CAPTURE, RequestCodes.CAMERA)
@@ -49,10 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode != Activity.RESULT_OK) {
-            _label.setText("Error loading file!");
             return;
         }
 
@@ -64,6 +67,40 @@ public class MainActivity extends AppCompatActivity {
         } catch(Exception exception) {
             _label.setText(exception.getMessage());
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void grantPermissions() {
+        boolean hasCameraAccess = checkSelfPermission(Permissions.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        boolean hasStorageAccess = checkSelfPermission(Permissions.READ_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if(!hasCameraAccess) {
+            ActivityCompat.requestPermissions(
+                MainActivity.this,
+                new String[] {Permissions.CAMERA},
+                Permissions.CAMERA_REQUEST_CODE
+            );
+        }
+
+        if(!hasStorageAccess) {
+            ActivityCompat.requestPermissions(
+                MainActivity.this,
+                new String[] {Permissions.READ_STORAGE},
+                Permissions.STORAGE_REQUEST_CODE
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for(int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                grantPermissions();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void initializeUI() {
