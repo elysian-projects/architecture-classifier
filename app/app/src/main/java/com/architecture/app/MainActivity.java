@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
+import com.architecture.app.model.ModelLoader;
 import com.architecture.app.permission.Permissions;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,14 +61,19 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             AbstractImageLoader imageLoader = new ImageLoaderFactory().create(requestCode, getApplicationContext());
-            Bitmap photo = imageLoader.load(data);
-
-            _image.setImageBitmap(photo);
+            setImage(imageLoader.load(data));
         } catch(Exception exception) {
             _label.setText(exception.getMessage());
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setImage(Bitmap image) {
+        _image.setImageBitmap(image);
+
+        ModelLoader modelLoader = new ModelLoader(getApplicationContext());
+        _label.setText(modelLoader.classifyImage(image));
     }
 
     private void grantPermissions() {
