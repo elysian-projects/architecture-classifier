@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
-import com.architecture.app.ml.Model1;
+import com.architecture.app.ml.Model;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ModelLoader {
                 throw new IOException("Could not load image!");
             }
 
-            Model1 model = Model1.newInstance(_context);
+            Model model = Model.newInstance(_context);
             Bitmap rescaledImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, true);
 
             TensorBuffer inputFeature = TensorBuffer.createFixedSize(
