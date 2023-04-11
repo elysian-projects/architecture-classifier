@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ModelOutputHandler {
-    private static final float MIN_DEFINITION_DIFFERENCE = 2f;
+    private static final float MIN_DEFINITION_DIFFERENCE = 3f;
 
     private final List<String> _classNames;
 
