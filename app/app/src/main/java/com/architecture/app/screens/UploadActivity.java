@@ -28,7 +28,6 @@ import com.architecture.app.permission.Permissions;
 public class UploadActivity extends AppCompatActivity {
     private Button _cameraButton;
     private Button _galleryButton;
-    private TextView _label;
     private ImageView _image;
     private DialogWindow _dialog;
 
@@ -37,7 +36,8 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        initializeUI();
+        initializeUIComponents();
+        initializeDialog();
         grantPermissions();
 
         _cameraButton.setOnClickListener(view -> {
@@ -64,7 +64,7 @@ public class UploadActivity extends AppCompatActivity {
             setImage(bitmapImage);
             classifyImage(bitmapImage);
         } catch(Exception exception) {
-            _label.setText(exception.getMessage());
+            exception.printStackTrace();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,9 +80,15 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void openResultDialog(ModelResponse response) {
+        if(response.found()) {
+            _dialog.setSuccessfulState();
+        } else {
+            _dialog.setFailedState();
+        }
+
         _dialog.show(
             response.message(),
-            response.ok()
+            response.found()
                 ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
                 : ModelResponse.FAILED_RESPONSE_SHORT
         );
@@ -120,11 +126,13 @@ public class UploadActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void initializeUI() {
+    private void initializeUIComponents() {
         _cameraButton = findViewById(R.id.openCameraButton);
         _galleryButton = findViewById(R.id.openGalleryButton);
         _image = findViewById(R.id.imagePreview);
-        _label = findViewById(R.id.resultTextView);
+    }
+
+    private void initializeDialog() {
         _dialog = new DialogWindow(UploadActivity.this);
     }
 }

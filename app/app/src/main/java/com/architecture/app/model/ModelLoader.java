@@ -25,7 +25,7 @@ public class ModelLoader {
     public ModelResponse classifyImage(Bitmap image) {
         try {
             if(image == null) {
-                throw new IOException("Could not load image!");
+                return new ModelResponse("Ошибка!", false);
             }
 
             Model model = Model.newInstance(_context);
@@ -42,12 +42,11 @@ public class ModelLoader {
             model.close();
 
             String definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
-            return new ModelResponse(definedClass, true);
+            return new ModelResponse(definedClass, !definedClass.equals(ModelOutputHandler.UNDEFINED_TYPE));
 
-        } catch (IOException exception) {
-            return new ModelResponse(exception.getMessage(), false);
-        } catch (InvalidModelResultException exception) {
-            return new ModelResponse(String.format("Classification error: %s", exception.getMessage()), false);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return new ModelResponse("Ошибка!", false);
         }
     }
 }

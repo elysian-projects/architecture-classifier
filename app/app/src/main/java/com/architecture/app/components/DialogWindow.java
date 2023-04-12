@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,24 +14,36 @@ import com.architecture.app.R;
 public class DialogWindow {
     // `AppCompatActivity` type is used instead of `Context` as we need to find item in the
     // layout from this class but the `Context` type does not include the `findViewById` method
-    private final AppCompatActivity _parentActivity;
+    private final AppCompatActivity _context;
 
     private Dialog _dialog;
+    private ImageView _icon;
     private TextView _resultText;
     private TextView _detailsText;
     private Button _okButton;
 
     public DialogWindow(AppCompatActivity context) {
-        _parentActivity = context;
+        _context = context;
 
         setupDialog();
         setupComponents();
         addEventListeners();
+        setSuccessfulState();
     }
 
     public void show(String result, String details) {
         setLabels(result, details);
         _dialog.show();
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setSuccessfulState() {
+        _icon.setImageDrawable(_context.getDrawable(R.drawable.success1));
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setFailedState() {
+        _icon.setImageDrawable(_context.getDrawable(R.drawable.info));
     }
 
     private void setLabels(String result, String details) {
@@ -40,19 +53,20 @@ public class DialogWindow {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setupDialog() {
-        _dialog = new Dialog(_parentActivity);
+        _dialog = new Dialog(_context);
 
         _dialog.setContentView(R.layout.dialog_layout);
-        _dialog.getWindow().setBackgroundDrawable(_parentActivity.getDrawable(R.drawable.dialog_background));
+        _dialog.getWindow().setBackgroundDrawable(_context.getDrawable(R.drawable.dialog_background));
         _dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         _dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
         _dialog.setCancelable(false);
     }
 
     private void setupComponents() {
-        _resultText = _parentActivity.findViewById(R.id.summaryResultMessage);
-        _detailsText = _parentActivity.findViewById(R.id.resultDescription);
-        _okButton = _parentActivity.findViewById(R.id.okButton);
+        _icon = _dialog.findViewById(R.id.dialogIcon);
+        _resultText = _dialog.findViewById(R.id.summaryResultMessage);
+        _detailsText = _dialog.findViewById(R.id.resultDescription);
+        _okButton = _dialog.findViewById(R.id.okButton);
     }
 
     private void addEventListeners() {

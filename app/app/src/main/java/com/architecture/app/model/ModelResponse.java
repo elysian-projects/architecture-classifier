@@ -5,18 +5,18 @@ public class ModelResponse {
     public static String FAILED_RESPONSE_SHORT = "К сожалению, нам не удалось определить этот вид архитектуры";
 
     private final String _message;
-    private final boolean _ok;
+    private final boolean _found;
 
-    public ModelResponse(String message, boolean ok) {
+    public ModelResponse(String message, boolean found) {
         _message = message;
-        _ok = ok;
+        _found = found;
     }
 
     public String message() {
         return _message;
     }
 
-    public boolean ok() {
-        return _ok;
+    public boolean found() {
+        return _found;
     }
 }
