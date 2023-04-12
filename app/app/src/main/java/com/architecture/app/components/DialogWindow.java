@@ -28,7 +28,7 @@ public class DialogWindow {
         addEventListeners();
     }
 
-    public void open(String result, String details) {
+    public void show(String result, String details) {
         setLabels(result, details);
         _dialog.show();
     }

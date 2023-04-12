@@ -80,7 +80,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void openResultDialog(ModelResponse response) {
-        _dialog.open(
+        _dialog.show(
             response.message(),
             response.ok()
                 ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
