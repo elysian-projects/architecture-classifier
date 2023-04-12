@@ -17,10 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.architecture.app.R;
+import com.architecture.app.components.DialogWindow;
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
+import com.architecture.app.model.ModelResponse;
 import com.architecture.app.permission.Permissions;
 
 public class UploadActivity extends AppCompatActivity {
@@ -28,6 +30,7 @@ public class UploadActivity extends AppCompatActivity {
     private Button _galleryButton;
     private TextView _label;
     private ImageView _image;
+    private DialogWindow _dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +59,10 @@ public class UploadActivity extends AppCompatActivity {
 
         try {
             AbstractImageLoader imageLoader = new ImageLoaderFactory().create(requestCode, getApplicationContext());
-            setImage(imageLoader.load(data));
+            Bitmap bitmapImage = imageLoader.load(data);
+
+            setImage(bitmapImage);
+            classifyImage(bitmapImage);
         } catch(Exception exception) {
             _label.setText(exception.getMessage());
         }
@@ -64,11 +70,22 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void classifyImage(Bitmap image) {
+        ModelLoader modelLoader = new ModelLoader(getApplicationContext());
+        openResultDialog(modelLoader.classifyImage(image));
+    }
+
     private void setImage(Bitmap image) {
         _image.setImageBitmap(image);
+    }
 
-        ModelLoader modelLoader = new ModelLoader(getApplicationContext());
-        _label.setText(modelLoader.classifyImage(image).message());
+    private void openResultDialog(ModelResponse response) {
+        _dialog.open(
+            response.message(),
+            response.ok()
+                ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
+                : ModelResponse.FAILED_RESPONSE_SHORT
+        );
     }
 
     private void grantPermissions() {
@@ -108,5 +125,6 @@ public class UploadActivity extends AppCompatActivity {
         _galleryButton = findViewById(R.id.openGalleryButton);
         _image = findViewById(R.id.imagePreview);
         _label = findViewById(R.id.resultTextView);
+        _dialog = new DialogWindow(UploadActivity.this);
     }
 }
