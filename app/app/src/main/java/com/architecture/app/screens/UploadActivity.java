@@ -94,17 +94,17 @@ public class UploadActivity extends AppCompatActivity {
 
         if(!hasCameraAccess) {
             ActivityCompat.requestPermissions(
-                    this,
-                    new String[] {Permissions.CAMERA},
-                    Permissions.CAMERA_REQUEST_CODE
+                this,
+                new String[] {Permissions.CAMERA},
+                Permissions.CAMERA_REQUEST_CODE
             );
         }
 
         if(!hasStorageAccess) {
             ActivityCompat.requestPermissions(
-                    this,
-                    new String[] {Permissions.READ_STORAGE},
-                    Permissions.STORAGE_REQUEST_CODE
+                this,
+                new String[] {Permissions.READ_STORAGE},
+                Permissions.STORAGE_REQUEST_CODE
             );
         }
     }
@@ -112,7 +112,7 @@ public class UploadActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for(int grantResult : grantResults) {
-            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+            if(grantResult != PackageManager.PERMISSION_GRANTED) {
                 grantPermissions();
             }
         }
