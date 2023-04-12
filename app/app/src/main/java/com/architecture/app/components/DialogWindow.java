@@ -2,19 +2,16 @@ package com.architecture.app.components;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.architecture.app.R;
 
 public class DialogWindow {
-    // `AppCompatActivity` type is used instead of `Context` as we need to find item in the
-    // layout from this class but the `Context` type does not include the `findViewById` method
-    private final AppCompatActivity _context;
+    private final Context _context;
 
     private Dialog _dialog;
     private ImageView _icon;
@@ -22,7 +19,7 @@ public class DialogWindow {
     private TextView _detailsText;
     private Button _okButton;
 
-    public DialogWindow(AppCompatActivity context) {
+    public DialogWindow(Context context) {
         _context = context;
 
         setupDialog();
