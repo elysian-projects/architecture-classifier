@@ -68,7 +68,7 @@ public class UploadActivity extends AppCompatActivity {
         _image.setImageBitmap(image);
 
         ModelLoader modelLoader = new ModelLoader(getApplicationContext());
-        _label.setText(modelLoader.classifyImage(image));
+        _label.setText(modelLoader.classifyImage(image).message());
     }
 
     private void grantPermissions() {

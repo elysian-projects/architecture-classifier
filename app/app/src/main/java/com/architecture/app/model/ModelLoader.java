@@ -22,7 +22,7 @@ public class ModelLoader {
         _context = context;
     }
 
-    public String classifyImage(Bitmap image) {
+    public ModelResponse classifyImage(Bitmap image) {
         try {
             if(image == null) {
                 throw new IOException("Could not load image!");
@@ -41,12 +41,13 @@ public class ModelLoader {
 
             model.close();
 
-            ModelOutputHandler outputHandler = new ModelOutputHandler(_context);
-            return outputHandler.computeModelClassificationResult(output);
+            String definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
+            return new ModelResponse(definedClass, true);
+
         } catch (IOException exception) {
-            return exception.getMessage();
+            return new ModelResponse(exception.getMessage(), false);
         } catch (InvalidModelResultException exception) {
-            return String.format("Classification error: %s", exception.getMessage());
+            return new ModelResponse(String.format("Classification error: %s", exception.getMessage()), false);
         }
     }
 }
