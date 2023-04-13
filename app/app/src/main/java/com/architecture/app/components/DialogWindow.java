@@ -35,7 +35,7 @@ public class DialogWindow {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void setSuccessfulState() {
-        _icon.setImageDrawable(_context.getDrawable(R.drawable.success1));
+        _icon.setImageDrawable(_context.getDrawable(R.drawable.success));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
