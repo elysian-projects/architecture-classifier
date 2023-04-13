@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -35,6 +36,7 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
+        setupActionBarTitle();
         initializeUIComponents();
         initializeDialog();
         grantPermissions();
@@ -123,6 +125,14 @@ public class UploadActivity extends AppCompatActivity {
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void setupActionBarTitle() {
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null) {
+            actionBar.setTitle("Добавить изображение");
+        }
     }
 
     private void initializeUIComponents() {
