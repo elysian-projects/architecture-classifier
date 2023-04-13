@@ -23,7 +23,6 @@ import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
-import com.architecture.app.permission.Permissions;
 
 public class UploadActivity extends AppCompatActivity {
     private Button _cameraButton;
@@ -39,13 +38,17 @@ public class UploadActivity extends AppCompatActivity {
         setupActionBarTitle();
         initializeUIComponents();
         initializeDialog();
-        grantPermissions();
 
         _cameraButton.setOnClickListener(view -> {
+            grantPermission(MediaStore.ACTION_IMAGE_CAPTURE, RequestCodes.CAMERA);
+
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, RequestCodes.CAMERA);
+
         });
         _galleryButton.setOnClickListener(view -> {
+            grantPermission(Intent.ACTION_GET_CONTENT, RequestCodes.GALLERY);
+
             Intent intent = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select picture"), RequestCodes.GALLERY);
         });
@@ -95,23 +98,12 @@ public class UploadActivity extends AppCompatActivity {
         );
     }
 
-    private void grantPermissions() {
-        boolean hasCameraAccess = checkSelfPermission(Permissions.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        boolean hasStorageAccess = checkSelfPermission(Permissions.READ_STORAGE) == PackageManager.PERMISSION_GRANTED;
-
-        if(!hasCameraAccess) {
+    private void grantPermission(String permissionName, int requestCode) {
+        if(checkSelfPermission(permissionName) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 this,
-                new String[] {Permissions.CAMERA},
-                Permissions.CAMERA_REQUEST_CODE
-            );
-        }
-
-        if(!hasStorageAccess) {
-            ActivityCompat.requestPermissions(
-                this,
-                new String[] {Permissions.READ_STORAGE},
-                Permissions.STORAGE_REQUEST_CODE
+                new String[] {permissionName},
+                requestCode
             );
         }
     }
@@ -120,7 +112,7 @@ public class UploadActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for(int grantResult : grantResults) {
             if(grantResult != PackageManager.PERMISSION_GRANTED) {
-                grantPermissions();
+                grantPermission(permissions[0], requestCode);
             }
         }
 
