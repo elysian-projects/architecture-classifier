@@ -16,7 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.architecture.app.databinding.ActivityMainBinding;
+import com.architecture.app.databinding.ActyvityNavbarBinding;
+import com.architecture.app.fragments.CameraFragment;
+import com.architecture.app.fragments.CheckFragment;
+import com.architecture.app.fragments.HomeFragment;
+import com.architecture.app.fragments.QuestionFragment;
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
@@ -28,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private Button _galleryButton;
     private TextView _label;
     private ImageView _image;
+
+    ActyvityNavbarBinding binding;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -50,6 +61,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select picture"), RequestCodes.GALLERY);
             }
         );
+
+        binding = ActyvityNavbarBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+                case R.id.home:
+                    replaceFragment(new HomeFragment());
+                    break;
+                case R.id.camera:
+                    replaceFragment(new CameraFragment());
+                    break;
+                case R.id.check:
+                    replaceFragment(new CheckFragment());
+                    break;
+                case R.id.question:
+                    replaceFragment(new QuestionFragment());
+                    break;
+            }
+
+            return true;
+        });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
+
     }
 
     @SuppressLint("SetTextI18n")
