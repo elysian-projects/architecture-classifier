@@ -20,8 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.architecture.app.databinding.ActivityMainBinding;
-import com.architecture.app.databinding.ActyvityNavbarBinding;
+import com.architecture.app.databinding.ActivityNavbarBinding;
 import com.architecture.app.fragments.CameraFragment;
 import com.architecture.app.fragments.CheckFragment;
 import com.architecture.app.fragments.HomeFragment;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView _label;
     private ImageView _image;
 
-    ActyvityNavbarBinding binding;
+    ActivityNavbarBinding binding;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         );
 
-        binding = ActyvityNavbarBinding.inflate(getLayoutInflater());
+        binding = ActivityNavbarBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
