@@ -31,21 +31,26 @@ public class Navbar {
         replaceFragment(new HomeFragment());
 
         _binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment fragmentToLoad;
 
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    fragmentToLoad = new HomeFragment();
                     break;
                 case R.id.camera:
-                    replaceFragment(new CameraFragment());
+                    fragmentToLoad = new CameraFragment();
                     break;
                 case R.id.check:
-                    replaceFragment(new CheckFragment());
+                    fragmentToLoad = new CheckFragment();
                     break;
                 case R.id.question:
-                    replaceFragment(new QuestionFragment());
+                    fragmentToLoad = new QuestionFragment();
                     break;
+                default:
+                    return false;
             }
+
+            replaceFragment(fragmentToLoad);
 
             return true;
         });
