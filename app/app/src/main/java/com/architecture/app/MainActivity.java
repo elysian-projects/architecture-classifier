@@ -3,8 +3,10 @@ package com.architecture.app;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +15,6 @@ import com.architecture.app.screens.UploadActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button _uploadButton;
-    private Navbar _navbar;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeUI() {
         _uploadButton = findViewById(R.id.uploadButton);
-        _navbar = new Navbar(this);
+
+        // This
+        new Navbar(this);
     }
 }
