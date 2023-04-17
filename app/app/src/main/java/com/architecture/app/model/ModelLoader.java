@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 
-import java.io.IOException;
-
 import com.architecture.app.ml.Model;
 
 public class ModelLoader {
@@ -22,10 +20,10 @@ public class ModelLoader {
         _context = context;
     }
 
-    public String classifyImage(Bitmap image) {
+    public ModelResponse classifyImage(Bitmap image) {
         try {
             if(image == null) {
-                throw new IOException("Could not load image!");
+                return new ModelResponse("Ошибка!", false);
             }
 
             Model model = Model.newInstance(_context);
@@ -41,12 +39,12 @@ public class ModelLoader {
 
             model.close();
 
-            ModelOutputHandler outputHandler = new ModelOutputHandler(_context);
-            return outputHandler.computeModelClassificationResult(output);
-        } catch (IOException exception) {
-            return exception.getMessage();
-        } catch (InvalidModelResultException exception) {
-            return String.format("Classification error: %s", exception.getMessage());
+            String definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
+            return new ModelResponse(definedClass, !definedClass.equals(ModelOutputHandler.UNDEFINED_TYPE));
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return new ModelResponse("Ошибка!", false);
         }
     }
 }

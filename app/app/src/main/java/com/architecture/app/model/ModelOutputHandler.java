@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ModelOutputHandler {
-    private static final float MIN_DEFINITION_DIFFERENCE = 2f;
+    public static final String UNDEFINED_TYPE = "Неизвестный";
+    private static final float MIN_DEFINITION_DIFFERENCE = 3.5f;
 
     private final List<String> _classNames;
 
@@ -19,7 +20,7 @@ public class ModelOutputHandler {
     public String computeModelClassificationResult(float[] output) throws InvalidModelResultException {
         // We can't define the correct type when two outputs are very close
         if(!canBeDefined(output)) {
-            return "Other";
+            return UNDEFINED_TYPE;
         }
 
         float maxValue = Float.MIN_VALUE;
