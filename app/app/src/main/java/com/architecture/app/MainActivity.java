@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         );
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
