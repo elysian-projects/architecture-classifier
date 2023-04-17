@@ -7,10 +7,10 @@
     tools:context=".fragments.CheckFragment">
 
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Check Fragment"
-    android:textSize="100px"
-    android:layout_gravity="center"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check Fragment"
+        android:textSize="100px"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
