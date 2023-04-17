@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private void initializeUI() {
         _uploadButton = findViewById(R.id.uploadButton);
 
-        // This
+        // Navbar logic is hidden inside of the constructor,
+        // so there is not need to have any public methods
         new Navbar(this);
     }
 }
