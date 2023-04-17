@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,12 +21,11 @@
         android:id="@+id/openGalleryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Галерея"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagePreview"
-        app:layout_constraintVertical_bias="0.89" />
+        android:layout_toRightOf="@id/divider"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="Галерея" />
 
 
     <Button
@@ -34,22 +33,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Камера"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/imagePreview"
-        app:layout_constraintVertical_bias="0.89" />
+        android:layout_toLeftOf="@id/divider"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagePreview"
-        app:layout_constraintVertical_bias="0.85" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="?android:attr/listDivider" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
