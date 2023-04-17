@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,9 +19,9 @@ import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
-import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
+import com.architecture.app.permission.Permissions;
 
 import java.util.Objects;
 
@@ -43,17 +42,16 @@ public class UploadActivity extends AppCompatActivity {
         initializeUIComponents();
 
         _cameraButton.setOnClickListener(view -> {
-            grantPermission(MediaStore.ACTION_IMAGE_CAPTURE, RequestCodes.CAMERA);
+            grantPermission(Permissions.CAMERA, Permissions.CAMERA_REQUEST_CODE);
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, RequestCodes.CAMERA);
-
+            Intent intent = new Intent(Permissions.CAMERA);
+            startActivityForResult(intent, Permissions.CAMERA_REQUEST_CODE);
         });
         _galleryButton.setOnClickListener(view -> {
-            grantPermission(Intent.ACTION_GET_CONTENT, RequestCodes.GALLERY);
+            grantPermission(Permissions.READ_STORAGE, Permissions.STORAGE_REQUEST_CODE);
 
-            Intent intent = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select picture"), RequestCodes.GALLERY);
+            Intent intent = new Intent().setType("image/*").setAction(Permissions.READ_STORAGE);
+            startActivityForResult(Intent.createChooser(intent, "Select picture"), Permissions.STORAGE_REQUEST_CODE);
         });
     }
 
