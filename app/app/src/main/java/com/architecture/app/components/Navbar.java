@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.architecture.app.R;
 import com.architecture.app.databinding.ActivityNavbarBinding;
-import com.architecture.app.fragments.CheckFragment;
-import com.architecture.app.fragments.HomeFragment;
-import com.architecture.app.fragments.QuestionFragment;
+import com.architecture.app.screens.fragments.CheckFragment;
+import com.architecture.app.screens.fragments.HomeFragment;
+import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.UploadActivity;
 
 public class Navbar {

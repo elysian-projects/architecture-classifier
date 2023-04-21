@@ -1,4 +1,4 @@
-package com.architecture.app.fragments;
+package com.architecture.app.screens.fragments;
 
 import android.os.Bundle;
 
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.architecture.app.R;
 
-public class QuestionFragment extends Fragment {
-    public static QuestionFragment newInstance() {
-        QuestionFragment fragment = new QuestionFragment();
+public class HomeFragment extends Fragment {
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -25,6 +25,6 @@ public class QuestionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_question, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
