@@ -7,12 +7,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -24,6 +24,8 @@ import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
 
+import java.util.Objects;
+
 public class UploadActivity extends AppCompatActivity {
     private Button _cameraButton;
     private Button _galleryButton;
@@ -33,11 +35,12 @@ public class UploadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload);
+        setContentView(R.layout.fragment_upload);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         setupActionBarTitle();
         initializeUIComponents();
-        initializeDialog();
 
         _cameraButton.setOnClickListener(view -> {
             grantPermission(MediaStore.ACTION_IMAGE_CAPTURE, RequestCodes.CAMERA);
@@ -52,6 +55,14 @@ public class UploadActivity extends AppCompatActivity {
             Intent intent = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select picture"), RequestCodes.GALLERY);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.home) {
+            finish();
+        }
+        return true;
     }
 
     @SuppressLint("SetTextI18n")
@@ -120,10 +131,8 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void setupActionBarTitle() {
-        ActionBar actionBar = getSupportActionBar();
-
-        if(actionBar != null) {
-            actionBar.setTitle("Добавить изображение");
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Добавить изображение");
         }
     }
 
@@ -131,9 +140,6 @@ public class UploadActivity extends AppCompatActivity {
         _cameraButton = findViewById(R.id.openCameraButton);
         _galleryButton = findViewById(R.id.openGalleryButton);
         _image = findViewById(R.id.imagePreview);
-    }
-
-    private void initializeDialog() {
         _dialog = new DialogWindow(UploadActivity.this);
     }
 }

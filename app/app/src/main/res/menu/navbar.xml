@@ -6,8 +6,8 @@
         android:id="@+id/home"
         android:title="Home"/>
     <item
-        android:icon="@drawable/camera"
-        android:id="@+id/camera"
+        android:icon="@drawable/upload"
+        android:id="@+id/upload"
         android:title="Camera"/>
     <item
         android:icon="@drawable/check_double"

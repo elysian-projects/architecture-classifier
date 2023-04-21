@@ -1,6 +1,6 @@
 package com.architecture.app.components;
 
-import android.content.Context;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -9,15 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.architecture.app.R;
 import com.architecture.app.databinding.ActivityNavbarBinding;
-import com.architecture.app.fragments.CameraFragment;
-import com.architecture.app.fragments.CheckFragment;
-import com.architecture.app.fragments.HomeFragment;
-import com.architecture.app.fragments.QuestionFragment;
+import com.architecture.app.screens.fragments.CheckFragment;
+import com.architecture.app.screens.fragments.HomeFragment;
+import com.architecture.app.screens.fragments.QuestionFragment;
+import com.architecture.app.screens.UploadActivity;
 
 public class Navbar {
-    private AppCompatActivity _context;
-
-    private ActivityNavbarBinding _binding;
+    private final AppCompatActivity _context;
 
     public Navbar(AppCompatActivity context) {
         _context = context;
@@ -26,20 +24,24 @@ public class Navbar {
     }
 
     private void initializeButtons() {
-        _binding = ActivityNavbarBinding.inflate(_context.getLayoutInflater());
-        _context.setContentView(_binding.getRoot());
+        ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(_context.getLayoutInflater());
+        _context.setContentView(binding.getRoot());
+
         replaceFragment(new HomeFragment());
 
-        _binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragmentToLoad;
 
-            switch (item.getItemId()) {
+            switch(item.getItemId()) {
                 case R.id.home:
                     fragmentToLoad = new HomeFragment();
                     break;
-                case R.id.camera:
-                    fragmentToLoad = new CameraFragment();
-                    break;
+                case R.id.upload:
+
+                    // This button must not change a fragment, it changes activity to the `UploadActivity`
+                    _context.startActivity(new Intent(_context, UploadActivity.class));
+
+                    return false;
                 case R.id.check:
                     fragmentToLoad = new CheckFragment();
                     break;

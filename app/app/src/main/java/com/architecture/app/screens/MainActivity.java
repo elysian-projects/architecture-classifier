@@ -1,4 +1,4 @@
-package com.architecture.app;
+package com.architecture.app.screens;
 
 import android.content.Intent;
 import android.os.Build;
@@ -8,12 +8,11 @@ import android.widget.Button;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.architecture.app.R;
 import com.architecture.app.components.Navbar;
-import com.architecture.app.screens.UploadActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button _uploadButton;
-    private Navbar _navbar;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -30,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeUI() {
         _uploadButton = findViewById(R.id.uploadButton);
-        _navbar = new Navbar(this);
+
+        // Navbar logic is hidden inside of the constructor,
+        // so there is not need to have any public methods
+        new Navbar(this);
     }
 }
