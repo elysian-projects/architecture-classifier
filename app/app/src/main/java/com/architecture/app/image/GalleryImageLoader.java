@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class GalleryImageLoader extends AbstractImageLoader {
@@ -15,7 +16,15 @@ public class GalleryImageLoader extends AbstractImageLoader {
 
     @Override
     public Bitmap load(Intent data) throws FileNotFoundException {
-        InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-        return BitmapFactory.decodeStream(inputStream);
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
+
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+
+            return bitmap;
+        } catch(IOException exception) {
+            throw new FileNotFoundException("Could not load file!");
+        }
     }
 }

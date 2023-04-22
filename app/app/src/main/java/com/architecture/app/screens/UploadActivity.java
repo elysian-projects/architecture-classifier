@@ -13,15 +13,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
+import com.architecture.app.permission.Permissions;
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
 import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
-import com.architecture.app.permission.Permissions;
 
 import java.util.Objects;
 
@@ -42,24 +41,22 @@ public class UploadActivity extends AppCompatActivity {
         initializeUIComponents();
 
         _cameraButton.setOnClickListener(view -> {
-            grantPermission(Permissions.CAMERA, Permissions.CAMERA_REQUEST_CODE);
-
-            Intent intent = new Intent(Permissions.CAMERA);
-            startActivityForResult(intent, Permissions.CAMERA_REQUEST_CODE);
+            if(grantPermission(Permissions.CAMERA, Permissions.CAMERA_REQUEST_CODE)) {
+                Intent intent = new Intent().setAction(Permissions.CAMERA);
+                startActivityForResult(intent, Permissions.CAMERA_REQUEST_CODE);
+            }
         });
         _galleryButton.setOnClickListener(view -> {
-            grantPermission(Permissions.READ_STORAGE, Permissions.STORAGE_REQUEST_CODE);
-
-            Intent intent = new Intent().setType("image/*").setAction(Permissions.READ_STORAGE);
-            startActivityForResult(Intent.createChooser(intent, "Select picture"), Permissions.STORAGE_REQUEST_CODE);
+            if(grantPermission(Permissions.READ_STORAGE, Permissions.STORAGE_REQUEST_CODE)) {
+                Intent intent = new Intent().setType("image/*").setAction(Permissions.READ_STORAGE);
+                startActivityForResult(Intent.createChooser(intent, "Select picture"), Permissions.STORAGE_REQUEST_CODE);
+            }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.home) {
-            finish();
-        }
+        finish();
         return true;
     }
 
@@ -107,21 +104,23 @@ public class UploadActivity extends AppCompatActivity {
         );
     }
 
-    private void grantPermission(String permissionName, int requestCode) {
-        if(checkSelfPermission(permissionName) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
+    private boolean grantPermission(String permissionName, int requestCode) {
+        if(!Permissions.permissionGranted(this, permissionName)) {
+            requestPermissions(
                 new String[] {permissionName},
                 requestCode
             );
-        }
+       }
+
+        return Permissions.permissionGranted(this, permissionName);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for(int grantResult : grantResults) {
-            if(grantResult != PackageManager.PERMISSION_GRANTED) {
-                grantPermission(permissions[0], requestCode);
+            if(grantResult == PackageManager.PERMISSION_DENIED) {
+                _dialog.setFailedState();
+                _dialog.show("Ошибка", "Не удалось получить доступ к источнику изображения!");
             }
         }
 
