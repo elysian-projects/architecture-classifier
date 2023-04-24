@@ -1,30 +1,46 @@
 package com.architecture.app.image;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
 
-import java.io.FileNotFoundException;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
+
 import java.io.IOException;
-import java.io.InputStream;
 
 public class GalleryImageLoader extends AbstractImageLoader {
-    public GalleryImageLoader(Context context) {
-        super(context);
+    private static final String REGISTRY_KEY = "GalleryImageLoader";
+
+    private ActivityResultLauncher<String> _selectPhotoLauncher;
+    private Uri _tempImageUri;
+
+    public GalleryImageLoader(ActivityResultRegistry activityResultRegistry, Context context) {
+        super(activityResultRegistry, context);
+
+        registerAction();
     }
 
     @Override
-    public Bitmap load(Intent data) throws FileNotFoundException {
+    @Nullable
+    public Bitmap runLoader() {
+        _selectPhotoLauncher.launch("image/*");
+
         try {
-            InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            inputStream.close();
-
-            return bitmap;
+            return ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContext().getContentResolver(), _tempImageUri));
         } catch(IOException exception) {
-            throw new FileNotFoundException("Could not load file!");
+            return null;
         }
+    }
+
+    private void registerAction() {
+        _selectPhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.GetContent(), result -> {
+            if(result != null) {
+                _tempImageUri = result;
+            }
+        });
     }
 }
