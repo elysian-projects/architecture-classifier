@@ -10,9 +10,9 @@
         android:id="@+id/upload"
         android:title="Camera"/>
     <item
-        android:icon="@drawable/check_double"
+        android:icon="@drawable/star_solid"
         android:id="@+id/check"
-        android:title="Check"/>
+        android:title="Achievements"/>
     <item
         android:icon="@drawable/circle_question"
         android:id="@+id/question"

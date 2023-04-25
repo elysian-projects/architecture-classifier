@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.architecture.app.R;
 
-public class CheckFragment extends Fragment {
-    public static CheckFragment newInstance() {
-        CheckFragment fragment = new CheckFragment();
+public class AchievementsFragment extends Fragment {
+    public static AchievementsFragment newInstance() {
+        AchievementsFragment fragment = new AchievementsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -25,6 +25,6 @@ public class CheckFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check, container, false);
+        return inflater.inflate(R.layout.fragment_achievements, container, false);
     }
 }

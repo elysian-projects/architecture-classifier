@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.architecture.app.R;
 import com.architecture.app.databinding.ActivityNavbarBinding;
-import com.architecture.app.screens.fragments.CheckFragment;
+import com.architecture.app.screens.fragments.AchievementsFragment;
 import com.architecture.app.screens.fragments.HomeFragment;
 import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.UploadActivity;
@@ -43,7 +43,7 @@ public class Navbar {
 
                     return false;
                 case R.id.check:
-                    fragmentToLoad = new CheckFragment();
+                    fragmentToLoad = new AchievementsFragment();
                     break;
                 case R.id.question:
                     fragmentToLoad = new QuestionFragment();
