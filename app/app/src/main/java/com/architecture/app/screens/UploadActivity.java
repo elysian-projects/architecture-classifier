@@ -51,8 +51,6 @@ public class UploadActivity extends AppCompatActivity {
         return (view) -> {
             try {
                 new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader(image -> {
-                    Log.i("Upload", "Callback called");
-
                     if(image != null) {
                         runClassification(image);
                     }
