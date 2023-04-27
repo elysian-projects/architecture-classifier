@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
@@ -25,6 +26,8 @@ public class CameraImageLoader extends AbstractImageLoader {
 
         _takePhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.StartActivityForResult(), success -> {
             try {
+                Log.i("Come", String.valueOf(success.getData() == null));
+
                 Bitmap image = Utils.getBitmapFromUri(success.getData().getData(), getContext());
                 _callback.run(image);
             } catch(Exception exception) {
@@ -36,7 +39,12 @@ public class CameraImageLoader extends AbstractImageLoader {
     @Override
     public void runLoader(LoaderCallback callback) {
         _callback = callback;
-        _takePhotoLauncher.launch(getCameraLoadIntent());
+
+        new Permissions().grantPermission(Permissions.CAMERA, getContext(), getRegistry(), isGranted -> {
+            if(isGranted) {
+                _takePhotoLauncher.launch(getCameraLoadIntent());
+            }
+        });
     }
 
     private Intent getCameraLoadIntent() {

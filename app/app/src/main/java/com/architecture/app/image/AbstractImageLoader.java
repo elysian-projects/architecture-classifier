@@ -1,12 +1,10 @@
 package com.architecture.app.image;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import androidx.activity.result.ActivityResultRegistry;
-import androidx.annotation.Nullable;
 
-import java.io.IOException;
+import com.architecture.app.permission.PermissionNotGrantedException;
 
 public abstract class AbstractImageLoader {
     private final ActivityResultRegistry _activityResultRegistry;
@@ -25,5 +23,5 @@ public abstract class AbstractImageLoader {
         return _activityResultRegistry;
     }
 
-    public abstract void runLoader(LoaderCallback callback);
+    public abstract void runLoader(LoaderCallback callback) throws PermissionNotGrantedException;
 }

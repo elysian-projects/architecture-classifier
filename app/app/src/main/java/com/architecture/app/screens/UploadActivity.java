@@ -2,6 +2,7 @@ package com.architecture.app.screens;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.architecture.app.components.DialogWindow;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
+import com.architecture.app.permission.PermissionNotGrantedException;
 
 import java.util.Objects;
 
@@ -47,11 +49,18 @@ public class UploadActivity extends AppCompatActivity {
 
     private View.OnClickListener createOnClickListener(int requestCode) {
         return (view) -> {
-            new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader(image -> {
-                if(image != null) {
-                    runClassification(image);
-                }
-            });
+            try {
+                new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader(image -> {
+                    Log.i("Upload", "Callback called");
+
+                    if(image != null) {
+                        runClassification(image);
+                    }
+                });
+            } catch(PermissionNotGrantedException exception) {
+                _dialog.setFailedState();
+                _dialog.show("Ошибка", "Не удалось получить доступ к источнику изображений!");
+            }
         };
     }
 
