@@ -1,26 +1,23 @@
 package com.architecture.app.screens;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.architecture.app.permission.Permissions;
+import com.architecture.app.image.RequestCodes;
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
-import com.architecture.app.image.AbstractImageLoader;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
+import com.architecture.app.permission.PermissionNotGrantedException;
 
 import java.util.Objects;
 
@@ -40,18 +37,8 @@ public class UploadActivity extends AppCompatActivity {
         setupActionBarTitle();
         initializeUIComponents();
 
-        _cameraButton.setOnClickListener(view -> {
-            if(grantPermission(Permissions.CAMERA, Permissions.CAMERA_REQUEST_CODE)) {
-                Intent intent = new Intent().setAction(Permissions.CAMERA);
-                startActivityForResult(intent, Permissions.CAMERA_REQUEST_CODE);
-            }
-        });
-        _galleryButton.setOnClickListener(view -> {
-            if(grantPermission(Permissions.READ_STORAGE, Permissions.STORAGE_REQUEST_CODE)) {
-                Intent intent = new Intent().setType("image/*").setAction(Permissions.READ_STORAGE);
-                startActivityForResult(Intent.createChooser(intent, "Select picture"), Permissions.STORAGE_REQUEST_CODE);
-            }
-        });
+        _cameraButton.setOnClickListener(createOnClickListener(RequestCodes.CAMERA));
+        _galleryButton.setOnClickListener(createOnClickListener(RequestCodes.GALLERY));
     }
 
     @Override
@@ -60,24 +47,28 @@ public class UploadActivity extends AppCompatActivity {
         return true;
     }
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != Activity.RESULT_OK) {
-            return;
-        }
+    private View.OnClickListener createOnClickListener(int requestCode) {
+        return (view) -> {
+            try {
+                new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader(image -> {
+                    if(image != null) {
+                        runClassification(image);
+                    }
+                });
+            } catch(PermissionNotGrantedException exception) {
+                _dialog.setFailedState();
+                _dialog.show("Ошибка", "Не удалось получить доступ к источнику изображений!");
+            }
+        };
+    }
 
+    private void runClassification(Bitmap image) {
         try {
-            AbstractImageLoader imageLoader = new ImageLoaderFactory().create(requestCode, getApplicationContext());
-            Bitmap bitmapImage = imageLoader.load(data);
-
-            setImage(bitmapImage);
-            classifyImage(bitmapImage);
+            setImage(image);
+            classifyImage(image);
         } catch(Exception exception) {
             exception.printStackTrace();
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void classifyImage(Bitmap image) {
@@ -102,29 +93,6 @@ public class UploadActivity extends AppCompatActivity {
                 ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
                 : ModelResponse.FAILED_RESPONSE_SHORT
         );
-    }
-
-    private boolean grantPermission(String permissionName, int requestCode) {
-        if(!Permissions.permissionGranted(this, permissionName)) {
-            requestPermissions(
-                new String[] {permissionName},
-                requestCode
-            );
-       }
-
-        return Permissions.permissionGranted(this, permissionName);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        for(int grantResult : grantResults) {
-            if(grantResult == PackageManager.PERMISSION_DENIED) {
-                _dialog.setFailedState();
-                _dialog.show("Ошибка", "Не удалось получить доступ к источнику изображения!");
-            }
-        }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void setupActionBarTitle() {

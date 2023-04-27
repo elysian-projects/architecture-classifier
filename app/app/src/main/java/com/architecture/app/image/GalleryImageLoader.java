@@ -1,30 +1,39 @@
 package com.architecture.app.image;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 public class GalleryImageLoader extends AbstractImageLoader {
-    public GalleryImageLoader(Context context) {
-        super(context);
+    private static final String REGISTRY_KEY = "GalleryImageLoader";
+
+    private LoaderCallback _callback;
+
+    private final ActivityResultLauncher<String> _selectPhotoLauncher;
+    private Uri _imageUri;
+
+    public GalleryImageLoader(ActivityResultRegistry activityResultRegistry, Context context) {
+        super(activityResultRegistry, context);
+
+        _selectPhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.GetContent(), result -> {
+            _imageUri = result;
+
+            try {
+                Bitmap image = Utils.getBitmapFromUri(_imageUri, getContext());
+                _callback.run(image);
+            } catch(Exception exception) {
+                _callback.run(null);
+            }
+        });
     }
 
     @Override
-    public Bitmap load(Intent data) throws FileNotFoundException {
-        try {
-            InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            inputStream.close();
-
-            return bitmap;
-        } catch(IOException exception) {
-            throw new FileNotFoundException("Could not load file!");
-        }
+    public void runLoader(LoaderCallback callback) {
+        _callback = callback;
+        _selectPhotoLauncher.launch("image/*");
     }
 }
