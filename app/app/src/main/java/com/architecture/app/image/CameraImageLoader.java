@@ -1,63 +1,55 @@
 package com.architecture.app.image;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
-import android.util.Log;
+import android.provider.MediaStore;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
-import androidx.core.content.FileProvider;
+import androidx.activity.result.contract.ActivityResultContracts;
 
-import com.architecture.app.BuildConfig;
-
-import java.io.File;
-import java.io.IOException;
+import com.architecture.app.permission.Permissions;
 
 public class CameraImageLoader extends AbstractImageLoader {
     private static final String REGISTRY_KEY = "CameraImageLoader";
 
-    private ActivityResultLauncher<Uri> _takePhotoLauncher;
-    private Uri _tempImageUri;
+    private LoaderCallback _callback;
+
+    private final ActivityResultLauncher<Intent> _takePhotoLauncher;
 
     public CameraImageLoader(ActivityResultRegistry activityResultRegistry, Context context) {
         super(activityResultRegistry, context);
 
-        registerAction();
+        _takePhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.StartActivityForResult(), success -> {
+            try {
+                Bitmap image = Utils.getBitmapFromUri(success.getData().getData(), getContext());
+                _callback.run(image);
+            } catch(Exception exception) {
+                _callback.run(null);
+            }
+        });
     }
 
     @Override
-    public Bitmap runLoader() {
-        _tempImageUri = getTempFileUri();
-        _takePhotoLauncher.launch(_tempImageUri);
-
-        try {
-            return ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContext().getContentResolver(), _tempImageUri));
-        } catch(IOException exception) {
-            return null;
-        }
+    public void runLoader(LoaderCallback callback) {
+        _callback = callback;
+        _takePhotoLauncher.launch(getCameraLoadIntent());
     }
 
-    private Uri getTempFileUri() {
-        try {
-            File tempFile = File.createTempFile("temp_image_file", ".png");
+    private Intent getCameraLoadIntent() {
+        ContentValues values = new ContentValues();
 
-            tempFile.createNewFile();
-            tempFile.deleteOnExit();
+        values.put(MediaStore.Images.Media.TITLE, "New Image");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Load From Camera");
 
-            return FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", tempFile);
-        } catch (IOException e) {
-            Log.i("Upload", e.getMessage());
-            throw new IllegalStateException("Errororroror");
-        }
-    }
+        Uri image = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-    private void registerAction() {
-//        _takePhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.GetContent(), success -> {
-////            if(success != null) {
-////                _tempImageUri = success;
-////            }
-//        });
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image);
+
+        return cameraIntent;
     }
 }

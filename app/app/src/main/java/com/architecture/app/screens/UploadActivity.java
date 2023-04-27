@@ -47,11 +47,11 @@ public class UploadActivity extends AppCompatActivity {
 
     private View.OnClickListener createOnClickListener(int requestCode) {
         return (view) -> {
-            Bitmap image = new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader();
-
-            if(image != null) {
-                runClassification(image);
-            }
+            new ImageLoaderFactory().create(requestCode, getActivityResultRegistry(), getApplicationContext()).runLoader(image -> {
+                if(image != null) {
+                    runClassification(image);
+                }
+            });
         };
     }
 

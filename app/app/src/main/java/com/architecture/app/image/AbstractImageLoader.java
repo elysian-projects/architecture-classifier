@@ -25,6 +25,5 @@ public abstract class AbstractImageLoader {
         return _activityResultRegistry;
     }
 
-    @Nullable
-    public abstract Bitmap runLoader();
+    public abstract void runLoader(LoaderCallback callback);
 }
