@@ -1,12 +1,9 @@
 package com.architecture.app.image;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
@@ -26,10 +23,7 @@ public class CameraImageLoader extends AbstractImageLoader {
 
         _takePhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.StartActivityForResult(), success -> {
             try {
-                Log.i("Come", String.valueOf(success.getData() == null));
-
-                Bitmap image = Utils.getBitmapFromUri(success.getData().getData(), getContext());
-                _callback.run(image);
+                _callback.run((Bitmap)success.getData().getExtras().get("data"));
             } catch(Exception exception) {
                 _callback.run(null);
             }
@@ -48,16 +42,6 @@ public class CameraImageLoader extends AbstractImageLoader {
     }
 
     private Intent getCameraLoadIntent() {
-        ContentValues values = new ContentValues();
-
-        values.put(MediaStore.Images.Media.TITLE, "New Image");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Load From Camera");
-
-        Uri image = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image);
-
-        return cameraIntent;
+        return new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     }
 }
