@@ -15,18 +15,18 @@ import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.UploadActivity;
 
 public class Navbar {
-    private final AppCompatActivity _context;
+    private AppCompatActivity _context;
 
-    public Navbar(AppCompatActivity context) {
+    public void attachToLayout(AppCompatActivity context) {
         _context = context;
 
-        initializeButtons();
+        ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(context.getLayoutInflater());
+        context.setContentView(binding.getRoot());
+
+        initializeButtons(binding);
     }
 
-    private void initializeButtons() {
-        ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(_context.getLayoutInflater());
-        _context.setContentView(binding.getRoot());
-
+    private void initializeButtons(ActivityNavbarBinding binding) {
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
