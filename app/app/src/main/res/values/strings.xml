@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Architecture classifier</string>
+    <string name="camera">Camera</string>
 </resources>
