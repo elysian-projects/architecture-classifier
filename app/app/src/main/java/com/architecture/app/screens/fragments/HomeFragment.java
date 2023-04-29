@@ -1,10 +1,12 @@
 package com.architecture.app.screens.fragments;
 
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,16 @@ import android.widget.Toast;
 
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
+import com.architecture.app.utils.FileParser;
+import com.architecture.app.utils.JSONFileParser;
 import com.architecture.app.viewModels.ArchitectureTypeNode;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
     private LinearLayout _linearLayout;
-    private Button _addNewButton;
     private DialogWindow _dialog;
 
     @Override
@@ -34,27 +41,26 @@ public class HomeFragment extends Fragment {
 
         initializeUI(rootView);
 
-        // TODO: remove before merging to development
-        addListeners();
+        // TODO: find a better way to do it
+        try {
+            FileParser parser = new JSONFileParser();
+            ArchitectureTypeNode[] nodes = parser.parse(getContext().getAssets().open("architectureTypes.json"), ArchitectureTypeNode[].class);
+
+            for(ArchitectureTypeNode node : nodes) {
+                Log.i("Adding", node.label);
+
+                addNewRow(node);
+            }
+        } catch(Exception exception) {
+            Log.i("HomeFragment", "Error reading data from json file!", exception);
+        }
 
         return rootView;
     }
 
     private void initializeUI(View view) {
         _linearLayout = view.findViewById(R.id.linear_layout);
-        _addNewButton = view.findViewById(R.id.add_new_row_button);
         _dialog = new DialogWindow(getContext());
-    }
-
-    // TODO: remove before merging to development
-    private void addListeners() {
-        _addNewButton.setOnClickListener(view -> {
-            ArchitectureTypeNode architectureTypeNode = new ArchitectureTypeNode(
-                    "Ancient Egypt", "ancient_egypt", "Some description for Ancient Egypt", "ancient_egypt.jpg", "external link", 3
-            );
-
-            addNewRow(architectureTypeNode);
-        });
     }
 
     private void addNewRow(ArchitectureTypeNode architectureTypeNode) {
@@ -65,7 +71,9 @@ public class HomeFragment extends Fragment {
         ImageView previewImageView = view.findViewById(R.id.architecture_type_image_preview);
 
         labelTextView.setText(architectureTypeNode.label);
-        foundCountTextView.setText(String.valueOf(architectureTypeNode.foundCount));
+
+        // TODO: get this data from another file
+        foundCountTextView.setText(String.valueOf(4));
 
         // FIXME: update this function when `DialogWindow` is updated
         View.OnClickListener listener = (onClickView) -> {
@@ -77,7 +85,7 @@ public class HomeFragment extends Fragment {
         previewImageView.setOnClickListener(listener);
 
         foundCountTextView.setOnClickListener(onClickView -> {
-            showToastWithFoundAmount(architectureTypeNode.label, architectureTypeNode.foundCount);
+            showToastWithFoundAmount(architectureTypeNode.label, 4);
         });
 
         loadImageToRow(previewImageView, architectureTypeNode.preview);
