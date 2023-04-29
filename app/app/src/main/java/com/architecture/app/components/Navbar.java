@@ -13,6 +13,7 @@ import com.architecture.app.screens.fragments.AchievementsFragment;
 import com.architecture.app.screens.fragments.HomeFragment;
 import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.UploadActivity;
+import com.architecture.app.screens.fragments.UploadFragment;
 
 public class Navbar {
     private final AppCompatActivity _context;
@@ -37,11 +38,8 @@ public class Navbar {
                     fragmentToLoad = new HomeFragment();
                     break;
                 case R.id.upload:
-
-                    // This button must not change a fragment, it changes activity to the `UploadActivity`
-                    _context.startActivity(new Intent(_context, UploadActivity.class));
-
-                    return false;
+                    fragmentToLoad = new UploadFragment();
+                    break;
                 case R.id.check:
                     fragmentToLoad = new AchievementsFragment();
                     break;

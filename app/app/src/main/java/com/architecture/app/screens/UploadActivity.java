@@ -2,7 +2,6 @@ package com.architecture.app.screens;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +40,7 @@ public class UploadActivity extends AppCompatActivity {
         _galleryButton.setOnClickListener(createOnClickListener(RequestCodes.GALLERY));
     }
 
+    // TODO: не переносить
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
