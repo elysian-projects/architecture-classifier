@@ -2,18 +2,19 @@ import numpy as np
 import sys
 from utils import *
 
-args = sys.argv[1:]
+#args = sys.argv[1:]
 
 # The model must be passed explicitly as the first argument
-check_if_model_provided(args)
+#check_if_model_provided(args)
 
-MODEL_PATH = resolve_model_path(args[0])
+#MODEL_PATH = resolve_model_path(args[0])
+MODEL_PATH = r"D:\git_repo\buildy\architecture-classifier-development\cli\models\model(koefx2)(5-classes)2.4.tflite"
 CLASS_NAMES = read_class_names()
 IMAGES = get_images_paths()
 
 # This function helps disable default tensorflow debug messages,
 # pass the `--show-tf-debug` flag to enable them
-disable_tensorflow_debugging_info_if_required(args)
+#disable_tensorflow_debugging_info_if_required(args)
 
 # Import the tensorflow module AFTER checking if the debug messages are enabled
 import tensorflow as tf
