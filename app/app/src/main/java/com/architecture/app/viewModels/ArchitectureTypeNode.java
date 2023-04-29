@@ -14,17 +14,13 @@ public class ArchitectureTypeNode {
     public final String preview;
 
     /** External link to an article about the architectural type */
-    public final String moreInfoLink;
+    public final String infoLink;
 
-    /** Count of how many times this type was found by used */
-    public final int foundCount;
-
-    public ArchitectureTypeNode(String label, String value, String description, String preview, String moreInfoLink, int foundCount) {
+    public ArchitectureTypeNode(String label, String value, String description, String preview, String infoLink) {
         this.label = label;
         this.value = value;
         this.description = description;
         this.preview = preview;
-        this.moreInfoLink = moreInfoLink;
-        this.foundCount = foundCount;
+        this.infoLink = infoLink;
     }
 }
