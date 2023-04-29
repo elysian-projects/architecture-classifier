@@ -1,0 +1,16 @@
+[
+  {
+    "label": "Греческий эпохи Возрождения",
+    "value": "greek_revival",
+    "description": "Описание для Греческого стиля",
+    "preview": "greek_revival.jpg",
+    "infoLink": "link"
+  },
+  {
+    "label": "Архитектура Древнего Египта",
+    "value": "ancient_egypt",
+    "description": "Описание для Древнего Египта",
+    "preview": "ancient_egypt.jpg",
+    "infoLink": "link"
+  }
+]
