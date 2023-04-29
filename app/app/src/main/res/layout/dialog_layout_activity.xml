@@ -9,7 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
-        android:id="@+id/okButton3"
+        android:id="@+id/galleryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -17,21 +17,21 @@
         android:stateListAnimator="@null"
         android:text="Gallery"
         android:textAllCaps="false"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         tools:ignore="UnknownIdInLayout" />
 
     <Button
-        android:id="@+id/okButton2"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:stateListAnimator="@null"
-        android:text="@string/camera"
+        android:text="Camera"
         android:textAllCaps="false"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintVertical_bias="1.0"
@@ -43,7 +43,7 @@
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/okButton2"
+        app:layout_constraintEnd_toStartOf="@+id/cameraButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/camera_for_dialog"
@@ -55,7 +55,8 @@
         android:layout_height="48dp"
         android:layout_marginStart="46dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/okButton3"
-        app:layout_constraintStart_toEndOf="@+id/okButton2"
+        app:layout_constraintEnd_toStartOf="@+id/galleryButton"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
         app:srcCompat="@drawable/gallery_for_dialog" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
