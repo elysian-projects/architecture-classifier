@@ -12,6 +12,10 @@ public class AssetsParser {
     private static ArchitectureTypeNode[] _cachedArchitectureTypes;
 
     public static ArchitectureTypeNode[] parseArchitectureTypes(Context context) throws IOException {
+        if(_cachedArchitectureTypes.length != 0) {
+            return _cachedArchitectureTypes;
+        }
+
         ArchitectureTypeNode[] nodes = new JSONFileParser().parse(
             context.getAssets().open(Assets.ARCHITECTURE_TYPES),
             ArchitectureTypeNode[].class
