@@ -1,7 +1,6 @@
 package com.architecture.app.screens.fragments;
 
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,12 +16,9 @@ import android.widget.Toast;
 
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
-import com.architecture.app.utils.FileParser;
-import com.architecture.app.utils.JSONFileParser;
+import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.viewModels.ArchitectureTypeNode;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
@@ -40,22 +35,17 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         initializeUI(rootView);
+        rendersTypesRows();
 
-        // TODO: find a better way to do it
+        return rootView;
+    }
+
+    private void rendersTypesRows() {
         try {
-            FileParser parser = new JSONFileParser();
-            ArchitectureTypeNode[] nodes = parser.parse(getContext().getAssets().open("architectureTypes.json"), ArchitectureTypeNode[].class);
-
-            for(ArchitectureTypeNode node : nodes) {
-                Log.i("Adding", node.label);
-
-                addNewRow(node);
-            }
+            Arrays.asList(AssetsParser.parseArchitectureTypes(requireContext())).forEach(this::addNewRow);
         } catch(Exception exception) {
             Log.i("HomeFragment", "Error reading data from json file!", exception);
         }
-
-        return rootView;
     }
 
     private void initializeUI(View view) {
