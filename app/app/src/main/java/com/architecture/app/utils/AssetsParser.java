@@ -1,36 +1,80 @@
 package com.architecture.app.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.architecture.app.constants.Assets;
-import com.architecture.app.viewModels.ArchitectureTypeFoundCountNode;
-import com.architecture.app.viewModels.ArchitectureTypeNode;
+import com.architecture.app.viewModels.TypeFoundNode;
+import com.architecture.app.viewModels.ArchitectureNode;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class AssetsParser {
-    private static ArchitectureTypeNode[] _cachedArchitectureTypes;
+    private static final List<ArchitectureNode> _cachedArchitectureTypes = new ArrayList<>();
 
-    public static ArchitectureTypeNode[] parseArchitectureTypes(Context context) throws IOException {
-        if(_cachedArchitectureTypes.length != 0) {
-            return _cachedArchitectureTypes;
+    public static ArchitectureNode[] parseArchitectureTypes(Context context) throws IOException {
+        if(_cachedArchitectureTypes.size() != 0) {
+            return _cachedArchitectureTypes.toArray(new ArchitectureNode[] {});
         }
 
-        ArchitectureTypeNode[] nodes = new JSONFileParser().parse(
+        ArchitectureNode[] nodes = new JSONFileParser().parse(
             context.getAssets().open(Assets.ARCHITECTURE_TYPES),
-            ArchitectureTypeNode[].class
+            ArchitectureNode[].class
         );
 
-        _cachedArchitectureTypes = nodes;
+        _cachedArchitectureTypes.addAll(Arrays.asList(nodes));
 
         return nodes;
     }
 
-    public static ArchitectureTypeFoundCountNode[] parseTypesFoundData(Context context) throws IOException {
-        // We don't need to cache this data, because it might quickly change multiple times
-        return new JSONFileParser().parse(
+    public static TypeFoundNode[] parseTypesFoundData(Context context) throws IOException {
+        File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA);
+
+        if(!storageData.exists()) {
+            return writeDefaultDataToFileAndGetData(context, storageData.toPath());
+        }
+
+        try(FileReader fileReader = new FileReader(storageData)) {
+            Scanner scanner = new Scanner(fileReader);
+            String result = "";
+
+            while(scanner.hasNext()) {
+                result += scanner.nextLine();
+            }
+
+            Log.i("AssetsParser", result);
+
+            return new JSONFileParser().parse(result, TypeFoundNode[].class);
+        }
+    }
+
+    private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context, Path storageData) throws IOException {
+        Path file = Files.createFile(storageData);
+
+        TypeFoundNode[] fileData = new JSONFileParser().parse(
             context.getAssets().open(Assets.TYPES_FOUND_DATA),
-            ArchitectureTypeFoundCountNode[].class
+            TypeFoundNode[].class
         );
+
+        try(FileWriter fileWriter = new FileWriter(file.toFile())) {
+            Gson gson = new Gson();
+
+            String encodedData = gson.toJson(fileData);
+
+            fileWriter.append(encodedData);
+            fileWriter.flush();
+        }
+
+        return fileData;
     }
 }

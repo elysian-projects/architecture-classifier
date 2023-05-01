@@ -1,6 +1,6 @@
 package com.architecture.app.viewModels;
 
-public class ArchitectureTypeNode {
+public class ArchitectureNode {
     /** Text representation for the client */
     public final String label;
 
@@ -16,7 +16,7 @@ public class ArchitectureTypeNode {
     /** External link to an article about the architectural type */
     public final String infoLink;
 
-    public ArchitectureTypeNode(String label, String value, String description, String preview, String infoLink) {
+    public ArchitectureNode(String label, String value, String description, String preview, String infoLink) {
         this.label = label;
         this.value = value;
         this.description = description;

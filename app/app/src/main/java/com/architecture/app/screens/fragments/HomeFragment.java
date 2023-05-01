@@ -16,18 +16,23 @@ import android.widget.Toast;
 
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
-import com.architecture.app.utils.AssetsParser;
-import com.architecture.app.viewModels.ArchitectureTypeNode;
+import com.architecture.app.viewModels.ArchitectureNode;
+import com.architecture.app.viewModels.HomeScreenViewModel;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
+    private HomeScreenViewModel _homeScreenModel;
+
     private LinearLayout _linearLayout;
     private DialogWindow _dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        _homeScreenModel = new HomeScreenViewModel(requireContext());
     }
 
     @Override
@@ -42,9 +47,17 @@ public class HomeFragment extends Fragment {
 
     private void rendersTypesRows() {
         try {
-            Arrays.asList(AssetsParser.parseArchitectureTypes(requireContext())).forEach(this::addNewRow);
-        } catch(Exception exception) {
+            HashMap<ArchitectureNode, Integer> layoutData = _homeScreenModel.getLayoutData();
+
+            for(ArchitectureNode node : layoutData.keySet()) {
+                addNewRow(node, layoutData.get(node));
+            }
+        } catch(NullPointerException exception) {
+            Log.i("HomeFragment", "Error getting the found value for a node!", exception);
+        } catch(IOException exception) {
             Log.i("HomeFragment", "Error reading data from json file!", exception);
+        } catch(Exception exception) {
+            Log.i("HomaFragment", "Unknown error", exception);
         }
     }
 
@@ -53,32 +66,30 @@ public class HomeFragment extends Fragment {
         _dialog = new DialogWindow(getContext());
     }
 
-    private void addNewRow(ArchitectureTypeNode architectureTypeNode) {
+    private void addNewRow(ArchitectureNode architectureNode, int foundTimes) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.row_architecture_type, null);
 
         TextView labelTextView = view.findViewById(R.id.architecture_type_title);
         TextView foundCountTextView = view.findViewById(R.id.architecture_type_found_count);
         ImageView previewImageView = view.findViewById(R.id.architecture_type_image_preview);
 
-        labelTextView.setText(architectureTypeNode.label);
-
-        // TODO: get this data from another file
-        foundCountTextView.setText(String.valueOf(4));
+        labelTextView.setText(architectureNode.label);
+        foundCountTextView.setText(String.valueOf(foundTimes));
 
         // FIXME: update this function when `DialogWindow` is updated
         View.OnClickListener listener = (onClickView) -> {
             _dialog.setSuccessfulState();
-            _dialog.show(architectureTypeNode.label, architectureTypeNode.description);
+            _dialog.show(architectureNode.label, architectureNode.description);
         };
 
         labelTextView.setOnClickListener(listener);
         previewImageView.setOnClickListener(listener);
 
         foundCountTextView.setOnClickListener(onClickView -> {
-            showToastWithFoundAmount(architectureTypeNode.label, 4);
+            showToastWithFoundAmount(architectureNode.label, foundTimes);
         });
 
-        loadImageToRow(previewImageView, architectureTypeNode.preview);
+        loadImageToRow(previewImageView, architectureNode.preview);
 
         _linearLayout.addView(view);
     }
