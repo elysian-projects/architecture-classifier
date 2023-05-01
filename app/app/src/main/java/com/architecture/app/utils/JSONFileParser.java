@@ -9,8 +9,13 @@ import java.util.Scanner;
 public class JSONFileParser implements FileParser {
     @Override
     public <T> T parse(InputStream filePath, Class<T> type) throws JsonSyntaxException {
+        return parse(readFileData(filePath), type);
+    }
+
+    @Override
+    public <T> T parse(String fileData, Class<T> type) throws JsonSyntaxException {
         Gson gson = new Gson();
-        return gson.fromJson(readFileData(filePath), type);
+        return gson.fromJson(fileData, type);
     }
 
     private String readFileData(InputStream stream) {
