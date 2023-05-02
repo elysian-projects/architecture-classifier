@@ -1,6 +1,7 @@
 package com.architecture.app.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,8 +20,12 @@ public class ModelOutputHandler {
 
     public String computeModelClassificationResult(float[] output) throws InvalidModelResultException {
         // We can't define the correct type when two outputs are very close
-        if(!canBeDefined(output)) {
-            return UNDEFINED_TYPE;
+//        if(!canBeDefined(output)) {
+//            return UNDEFINED_TYPE;
+//        }
+
+        for(float item : output) {
+            Log.i("ModelOutputHandler", String.valueOf(item));
         }
 
         float maxValue = Float.MIN_VALUE;
