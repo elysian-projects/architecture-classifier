@@ -20,9 +20,9 @@ public class ModelOutputHandler {
 
     public String computeModelClassificationResult(float[] output) throws InvalidModelResultException {
         // We can't define the correct type when two outputs are very close
-//        if(!canBeDefined(output)) {
-//            return UNDEFINED_TYPE;
-//        }
+        if(!canBeDefined(output)) {
+            return UNDEFINED_TYPE;
+        }
 
         for(float item : output) {
             Log.i("ModelOutputHandler", String.valueOf(item));
