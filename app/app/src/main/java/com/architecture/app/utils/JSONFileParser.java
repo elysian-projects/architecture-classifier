@@ -27,6 +27,8 @@ public class JSONFileParser implements FileParser {
             fileData += scanner.nextLine() + "\n";
         }
 
+        scanner.close();
+
         return fileData;
     }
 }
