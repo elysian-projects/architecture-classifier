@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 
-import com.architecture.app.ml.Model;
 import com.architecture.app.ml.Model4;
 
 public class ModelLoader {
