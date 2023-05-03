@@ -7,5 +7,5 @@ import java.io.InputStream;
 
 public interface FileParser {
     <T> T parse(InputStream filePath, Class<T> type) throws IOException;
-    <T> T parse(String fileData, Class<T> type) throws JsonSyntaxException;
+    <T> T parse(String fileData, Class<T> type) throws Exception;
 }
