@@ -35,5 +35,5 @@ for image in IMAGES:
   interpreter.invoke()
 
   output_data = interpreter.get_tensor(interpreter.get_output_details()[0]['index'])
-  print(output_data[0])
+
   print_result(get_result(output_data[0], CLASS_NAMES), image)
