@@ -14,8 +14,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +24,17 @@ public class AssetsParser {
 
     public static Bitmap readPreviewImage(Context context, String image) throws IOException {
         return BitmapFactory.decodeStream(context.getAssets().open("previews/" + image));
+    }
+
+    public static void writeFoundNodes(Context context, TypeFoundNode[] foundNodes) throws IOException {
+        File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA);
+
+        try(FileWriter fileWriter = new FileWriter(storageData)) {
+            fileWriter.append(new Gson().toJson(foundNodes));
+            fileWriter.flush();
+        }
+
+        Log.i("AssetsParser", "Successfully wrote found nodes");
     }
 
     public static ArchitectureNode[] parseArchitectureTypes(Context context) throws IOException {
@@ -47,7 +56,7 @@ public class AssetsParser {
         File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA);
 
         if(!storageData.exists()) {
-            return writeDefaultDataToFileAndGetData(context, storageData.toPath());
+            return writeDefaultDataToFileAndGetData(context);
         }
 
         try(FileReader fileReader = new FileReader(storageData)) {
@@ -64,9 +73,7 @@ public class AssetsParser {
         }
     }
 
-    private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context, Path storageData) throws IOException {
-        Path file = Files.createFile(storageData);
-
+    private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context) throws IOException {
         ArchitectureNode[] architectureNodes = new JSONFileParser().parse(
             context.getAssets().open(Assets.ARCHITECTURE_TYPES),
             ArchitectureNode[].class
@@ -74,12 +81,7 @@ public class AssetsParser {
 
         TypeFoundNode[] foundNodesAsArray = getArrayWithDefaultObjects(architectureNodes);
 
-        try(FileWriter fileWriter = new FileWriter(file.toFile())) {
-            Gson gson = new Gson();
-
-            fileWriter.append(gson.toJson(foundNodesAsArray));
-            fileWriter.flush();
-        }
+        writeFoundNodes(context, foundNodesAsArray);
 
         return foundNodesAsArray;
     }

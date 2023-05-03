@@ -18,7 +18,11 @@ import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
 import com.architecture.app.permission.PermissionNotGrantedException;
+import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.viewModels.ArchitectureNode;
+import com.architecture.app.viewModels.TypeFoundNode;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class UploadActivity extends AppCompatActivity {
@@ -72,8 +76,44 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void classifyImage(Bitmap image) {
-        ModelLoader modelLoader = new ModelLoader(getApplicationContext());
-        openResultDialog(modelLoader.classifyImage(image));
+        ModelResponse response = new ModelLoader(getApplicationContext()).classifyImage(image);
+
+        try {
+            if(response.found()) {
+                increaseFoundNodeCounter(response.message());
+            }
+        } catch(Exception exception) {
+            Log.i("UploadActivity", "Increasing counter failed", exception);
+        }
+
+        openResultDialog(response);
+    }
+
+    private TypeFoundNode[] getFoundNodes() throws IOException {
+        return AssetsParser.parseTypesFoundData(getApplicationContext());
+    }
+
+    private void increaseFoundNodeCounter(String label) throws IOException {
+        ArchitectureNode[] nodes = AssetsParser.parseArchitectureTypes(getApplicationContext());
+        TypeFoundNode[] foundNodes = getFoundNodes();
+
+        String value = "";
+
+        for(ArchitectureNode node : nodes) {
+            if(node.label.equalsIgnoreCase(label)) {
+                value = node.label;
+                break;
+            }
+        }
+
+        for(TypeFoundNode foundNode : foundNodes) {
+            if(foundNode.value.equalsIgnoreCase(value)) {
+                foundNode.increase();
+                return;
+            }
+        }
+
+        AssetsParser.writeFoundNodes(getApplicationContext(), foundNodes);
     }
 
     private void setImage(Bitmap image) {
