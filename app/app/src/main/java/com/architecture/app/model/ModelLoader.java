@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 
-import com.architecture.app.ml.Model;
+import com.architecture.app.ml.Model4;
 
 public class ModelLoader {
     private static final int IMAGE_WIDTH = 180;
@@ -26,7 +26,7 @@ public class ModelLoader {
                 return new ModelResponse("Ошибка!", false);
             }
 
-            Model model = Model.newInstance(_context);
+            Model4 model = Model4.newInstance(_context);
             Bitmap rescaledImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, true);
 
             TensorImage tensorImage = new TensorImage(DataType.FLOAT32);

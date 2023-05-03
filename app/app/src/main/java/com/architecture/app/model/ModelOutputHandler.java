@@ -1,6 +1,7 @@
 package com.architecture.app.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class ModelOutputHandler {
         int maxIndex = 0;
 
         for(int i = 0; i < output.length; i++) {
-            System.out.println(output[i]);
+            Log.i("ModelOutputHandler", String.valueOf(output[i]));
 
             if(output[i] > maxValue) {
                 maxValue = output[i];
