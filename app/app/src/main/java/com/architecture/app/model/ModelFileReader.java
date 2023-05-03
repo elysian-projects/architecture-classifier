@@ -2,17 +2,16 @@ package com.architecture.app.model;
 
 import android.content.Context;
 
+import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.viewModels.ArchitectureNode;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class ModelFileReader {
-    private static final String CLASSNAMES_PATH = "classNames.txt";
-
-    // Caching class names to avoid reading every time it is required
-    private static List<String> _classNames = new ArrayList<>();
+    private static List<String> _classNames;
 
     private final Context _context;
 
@@ -21,21 +20,18 @@ public class ModelFileReader {
     }
 
     public List<String> readClassNamesList() throws IOException {
-        if(_classNames.size() != 0) {
+        if(_classNames != null && _classNames.size() != 0) {
             return _classNames;
         }
 
-        try(InputStream inputStream = _context.getAssets().open(CLASSNAMES_PATH)) {
-            Scanner scanner = new Scanner(inputStream);
-            List<String> tempList = new ArrayList<>();
+        ArchitectureNode[] nodes = AssetsParser.parseArchitectureTypes(_context);
+        List<String> classList = new ArrayList<>();
 
-            while(scanner.hasNext()) {
-                tempList.add(scanner.nextLine());
-            }
+        Arrays.stream(nodes).forEach(node -> classList.add(node.label));
 
-            _classNames = tempList;
+        // Caching class names to avoid reading every time it is required
+        _classNames = classList;
 
-            return tempList;
-        }
+        return classList;
     }
 }
