@@ -24,15 +24,11 @@ public class ModelOutputHandler {
             return UNDEFINED_TYPE;
         }
 
-        for(float item : output) {
-            Log.i("ModelOutputHandler", String.valueOf(item));
-        }
-
         float maxValue = Float.MIN_VALUE;
         int maxIndex = 0;
 
         for(int i = 0; i < output.length; i++) {
-            System.out.println(output[i]);
+            Log.i("ModelOutputHandler", String.valueOf(output[i]));
 
             if(output[i] > maxValue) {
                 maxValue = output[i];
