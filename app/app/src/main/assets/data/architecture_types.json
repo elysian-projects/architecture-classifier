@@ -1,16 +1,37 @@
 [
   {
-    "label": "Греческий эпохи Возрождения",
+    "label": "Древнеегипетский стиль",
+    "value": "ancient_egypt",
+    "description": "Описание для Древнего Египта",
+    "preview": "ancient_egypt.jpg",
+    "infoLink": "link"
+  },
+  {
+    "label": "Борокко",
+    "value": "baroque",
+    "description": "Описание для Борокко",
+    "preview": "baroque.jpg",
+    "infoLink": "link"
+  },
+  {
+    "label": "Древнегреческий стиль",
     "value": "greek_revival",
     "description": "Описание для Греческого стиля",
     "preview": "greek_revival.jpg",
     "infoLink": "link"
   },
   {
-    "label": "Архитектура Древнего Египта",
-    "value": "ancient_egypt",
-    "description": "Описание для Древнего Египта",
-    "preview": "ancient_egypt.jpg",
+    "label": "Российское Возрождение",
+    "value": "russian_revival",
+    "description": "Описание для Русского Возрождения",
+    "preview": "russian_revival.jpg",
+    "infoLink": "link"
+  },
+  {
+    "label": "Панельки",
+    "value": "panels",
+    "description": "Описание для ",
+    "preview": "panels.png",
     "infoLink": "link"
   }
 ]
