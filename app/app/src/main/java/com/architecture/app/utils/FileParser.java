@@ -1,7 +1,5 @@
 package com.architecture.app.utils;
 
-import com.google.gson.JsonSyntaxException;
-
 import java.io.IOException;
 import java.io.InputStream;
 
