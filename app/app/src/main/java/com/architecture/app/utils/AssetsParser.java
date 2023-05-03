@@ -61,20 +61,29 @@ public class AssetsParser {
     private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context, Path storageData) throws IOException {
         Path file = Files.createFile(storageData);
 
-        TypeFoundNode[] fileData = new JSONFileParser().parse(
-            context.getAssets().open(Assets.TYPES_FOUND_DATA),
-            TypeFoundNode[].class
+        ArchitectureNode[] architectureNodes = new JSONFileParser().parse(
+            context.getAssets().open(Assets.ARCHITECTURE_TYPES),
+            ArchitectureNode[].class
         );
+
+        TypeFoundNode[] foundNodesAsArray = getArrayWithDefaultObjects(architectureNodes);
 
         try(FileWriter fileWriter = new FileWriter(file.toFile())) {
             Gson gson = new Gson();
 
-            String encodedData = gson.toJson(fileData);
-
-            fileWriter.append(encodedData);
+            fileWriter.append(gson.toJson(foundNodesAsArray));
             fileWriter.flush();
         }
 
-        return fileData;
+        return foundNodesAsArray;
+    }
+
+    private static TypeFoundNode[] getArrayWithDefaultObjects(ArchitectureNode[] architectureNodes) {
+        List<TypeFoundNode> foundNodes = new ArrayList<>();
+        String[] classNameValues = Arrays.stream(architectureNodes).map(node -> node.value).toArray(String[]::new);
+
+        Arrays.asList(classNameValues).forEach(value -> foundNodes.add(new TypeFoundNode(value, TypeFoundNode.DEFAULT_FOUND_TIMES)));
+
+        return foundNodes.toArray(new TypeFoundNode[] {});
     }
 }
