@@ -1,6 +1,8 @@
 package com.architecture.app.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.architecture.app.constants.Assets;
@@ -12,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -21,6 +24,10 @@ import java.util.Scanner;
 
 public class AssetsParser {
     private static final List<ArchitectureNode> _cachedArchitectureTypes = new ArrayList<>();
+
+    public static Bitmap readPreviewImage(Context context, String image) throws IOException {
+        return BitmapFactory.decodeStream(context.getAssets().open("previews/" + image));
+    }
 
     public static ArchitectureNode[] parseArchitectureTypes(Context context) throws IOException {
         if(_cachedArchitectureTypes.size() != 0) {

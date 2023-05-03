@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
+import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.HomeScreenViewModel;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
@@ -100,7 +102,9 @@ public class HomeFragment extends Fragment {
 
     private void loadImageToRow(ImageView imageView, String preview) {
         try {
-            imageView.setImageBitmap(BitmapFactory.decodeStream(getContext().getAssets().open("previews/" + preview)));
-        } catch(Exception ignored) {}
+            imageView.setImageBitmap(AssetsParser.readPreviewImage(requireContext(), preview));
+        } catch(Exception exception) {
+            Log.i("HomeFragment", "Could not load a preview image", exception);
+        }
     }
 }
