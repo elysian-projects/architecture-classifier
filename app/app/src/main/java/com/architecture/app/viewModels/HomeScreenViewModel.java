@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.architecture.app.utils.AssetsParser;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,23 +22,25 @@ public class HomeScreenViewModel {
         ArchitectureNode[] nodes = readNodesFromStorage();
         TypeFoundNode[] nodesFoundData = readNodesFoundData();
 
+        Log.i("HomeScreenViewModel", new Gson().toJson(nodesFoundData));
+
         HashMap<ArchitectureNode, Integer> foundListMatch = new HashMap<>();
 
         for(ArchitectureNode node : nodes) {
             for(int i = 0; i < nodesFoundData.length; i++) {
                 TypeFoundNode foundTypeNode = nodesFoundData[i];
 
-                boolean found = node.value.equalsIgnoreCase(foundTypeNode.value);
+                Log.i("HomeScreenViewModel", node.value + " " + foundTypeNode.value + " " + String.valueOf(node.value.equalsIgnoreCase(foundTypeNode.value)));
 
-                if(found) {
+                if(node.value.equalsIgnoreCase(foundTypeNode.value)) {
                     foundListMatch.put(node, foundTypeNode.foundTimes);
+                    break;
                 }
 
                 // In case if the default data in file has a mistake, we need to make sure the found list has the same
                 // length as the nodes list by adding zero to the index with
-                boolean lastStep = i == nodesFoundData.length - 1;
-
-                if(lastStep && !found) {
+                if(i == nodesFoundData.length - 1) {
+                    Log.i("HomeScreenViewMode",  "Not found for: " + node.value);
                     foundListMatch.put(node, 0);
                 }
             }

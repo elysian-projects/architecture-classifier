@@ -29,12 +29,15 @@ public class AssetsParser {
     public static void writeFoundNodes(Context context, TypeFoundNode[] foundNodes) throws IOException {
         File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA);
 
+        String data = new Gson().toJson(foundNodes);
+
         try(FileWriter fileWriter = new FileWriter(storageData)) {
-            fileWriter.append(new Gson().toJson(foundNodes));
+            fileWriter.append(data);
             fileWriter.flush();
         }
 
-        Log.i("AssetsParser", "Successfully wrote found nodes");
+        Log.i("AssetsParser", "Successfully wrote found nodes:");
+        Log.i("AssetsParser", data);
     }
 
     public static ArchitectureNode[] parseArchitectureTypes(Context context) throws IOException {
