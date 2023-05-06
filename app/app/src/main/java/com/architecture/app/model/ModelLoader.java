@@ -40,7 +40,7 @@ public class ModelLoader {
             model.close();
 
             String definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
-            return new ModelResponse(definedClass, !definedClass.equals(ModelOutputHandler.UNDEFINED_TYPE));
+            return new ModelResponse(definedClass, true);
 
         } catch (Exception exception) {
             exception.printStackTrace();

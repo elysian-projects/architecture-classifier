@@ -2,6 +2,7 @@ package com.architecture.app.screens;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +79,7 @@ public class UploadActivity extends AppCompatActivity {
         ModelResponse response = new ModelLoader(getApplicationContext()).classifyImage(image);
 
         try {
-            if(response.found()) {
+            if(response.ok()) {
                 increaseFoundNodeCounter(response.message());
             }
         } catch(Exception exception) {
@@ -120,11 +121,11 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void openResultDialog(ModelResponse response) {
-        DialogVariant variant = response.found()
+        DialogVariant variant = response.ok()
             ? DialogVariant.SUCCESS
             : DialogVariant.WARNING;
 
-        String message = response.found()
+        String message = response.ok()
             ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
             : ModelResponse.FAILED_RESPONSE_SHORT;
 
