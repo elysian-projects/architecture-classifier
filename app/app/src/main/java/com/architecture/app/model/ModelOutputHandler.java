@@ -8,9 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ModelOutputHandler {
-    public static final String UNDEFINED_TYPE = "Неизвестный";
-    private static final float MIN_DEFINITION_DIFFERENCE = 3.5f;
-
     private final List<String> _classNames;
 
     public ModelOutputHandler(Context context) throws IOException {
@@ -19,11 +16,6 @@ public class ModelOutputHandler {
     }
 
     public String computeModelClassificationResult(float[] output) throws InvalidModelResultException {
-        // We can't define the correct type when two outputs are very close
-        if(!canBeDefined(output)) {
-            return UNDEFINED_TYPE;
-        }
-
         float maxValue = Float.MIN_VALUE;
         int maxIndex = 0;
 
@@ -41,11 +33,5 @@ public class ModelOutputHandler {
         }
 
         return _classNames.get(maxIndex);
-    }
-
-    public boolean canBeDefined(float[] output) {
-        Arrays.sort(output);
-        int length = output.length;
-        return (output[length - 1] - output[length - 2]) > MIN_DEFINITION_DIFFERENCE;
     }
 }
