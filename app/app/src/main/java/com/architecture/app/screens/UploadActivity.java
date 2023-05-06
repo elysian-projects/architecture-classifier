@@ -22,7 +22,6 @@ import com.architecture.app.permission.PermissionNotGrantedException;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.TypeFoundNode;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -80,12 +79,8 @@ public class UploadActivity extends AppCompatActivity {
     private void classifyImage(Bitmap image) {
         ModelResponse response = new ModelLoader(getApplicationContext()).classifyImage(image);
 
-        try {
-            if(response.ok()) {
-                increaseFoundNodeCounter(response.message());
-            }
-        } catch(Exception exception) {
-            Log.i("UploadActivity", "Increasing counter failed", exception);
+        if(response.ok()) {
+            increaseFoundNodeCounter(response.message());
         }
 
         openResultDialog(response);
@@ -95,30 +90,34 @@ public class UploadActivity extends AppCompatActivity {
         return AssetsParser.parseTypesFoundData(getApplicationContext());
     }
 
-    private void increaseFoundNodeCounter(String label) throws IOException {
-        ArchitectureNode[] nodes = AssetsParser.parseArchitectureTypes(getApplicationContext());
-        TypeFoundNode[] foundNodes = getFoundNodes();
+    private void increaseFoundNodeCounter(String label) {
+        try {
+            ArchitectureNode[] nodes = AssetsParser.parseArchitectureTypes(getApplicationContext());
+            TypeFoundNode[] foundNodes = getFoundNodes();
 
-        String value = "";
+            String value = "";
 
-        for(ArchitectureNode node : nodes) {
-            if(node.label.equalsIgnoreCase(label)) {
-                value = node.value;
-                break;
+            for(ArchitectureNode node : nodes) {
+                if(node.label.equalsIgnoreCase(label)) {
+                    value = node.value;
+                    break;
+                }
             }
-        }
 
-        Log.i("UploadActivity", "Value to increase is: " + value);
+            Log.i("UploadActivity", "Value to increase is: " + value);
 
-        for(TypeFoundNode foundNode : foundNodes) {
-            if(foundNode.value.equalsIgnoreCase(value)) {
-                Log.i("UploadActivity", "Node found!");
-                foundNode.increase();
-                break;
+            for(TypeFoundNode foundNode : foundNodes) {
+                if(foundNode.value.equalsIgnoreCase(value)) {
+                    Log.i("UploadActivity", "Node found!");
+                    foundNode.increase();
+                    break;
+                }
             }
-        }
 
-        AssetsParser.writeFoundNodes(getApplicationContext(), foundNodes);
+            AssetsParser.writeFoundNodes(getApplicationContext(), foundNodes);
+        } catch(IOException exception) {
+            Log.i("UploadActivity", "Increasing counter failed", exception);
+        }
     }
 
     private void setImage(Bitmap image) {
