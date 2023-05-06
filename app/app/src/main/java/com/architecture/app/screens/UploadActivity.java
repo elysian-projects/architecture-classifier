@@ -80,7 +80,7 @@ public class UploadActivity extends AppCompatActivity {
         ModelResponse response = new ModelLoader(getApplicationContext()).classifyImage(image);
 
         if(response.ok()) {
-            increaseFoundNodeCounter(response.message());
+            increaseFoundNodeCounter(response.node());
         }
 
         openResultDialog(response);
@@ -90,25 +90,12 @@ public class UploadActivity extends AppCompatActivity {
         return AssetsParser.parseTypesFoundData(getApplicationContext());
     }
 
-    private void increaseFoundNodeCounter(String label) {
+    private void increaseFoundNodeCounter(ArchitectureNode node) {
         try {
-            ArchitectureNode[] nodes = AssetsParser.parseArchitectureTypes(getApplicationContext());
             TypeFoundNode[] foundNodes = getFoundNodes();
 
-            String value = "";
-
-            for(ArchitectureNode node : nodes) {
-                if(node.label.equalsIgnoreCase(label)) {
-                    value = node.value;
-                    break;
-                }
-            }
-
-            Log.i("UploadActivity", "Value to increase is: " + value);
-
             for(TypeFoundNode foundNode : foundNodes) {
-                if(foundNode.value.equalsIgnoreCase(value)) {
-                    Log.i("UploadActivity", "Node found!");
+                if(foundNode.value.equalsIgnoreCase(node.value)) {
                     foundNode.increase();
                     break;
                 }
@@ -134,7 +121,7 @@ public class UploadActivity extends AppCompatActivity {
             : ModelResponse.FAILED_RESPONSE_SHORT;
 
         _dialog.setVariant(variant)
-                .setTitle(response.message())
+                .setTitle(response.node().label)
                 .setMessage(message)
                 .show();
     }
