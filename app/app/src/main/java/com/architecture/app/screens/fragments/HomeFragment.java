@@ -1,6 +1,5 @@
 package com.architecture.app.screens.fragments;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,7 +20,6 @@ import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.HomeScreenViewModel;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
