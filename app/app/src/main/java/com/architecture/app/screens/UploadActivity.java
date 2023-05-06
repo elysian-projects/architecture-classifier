@@ -22,6 +22,7 @@ import com.architecture.app.permission.PermissionNotGrantedException;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.TypeFoundNode;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -102,15 +103,18 @@ public class UploadActivity extends AppCompatActivity {
 
         for(ArchitectureNode node : nodes) {
             if(node.label.equalsIgnoreCase(label)) {
-                value = node.label;
+                value = node.value;
                 break;
             }
         }
 
+        Log.i("UploadActivity", "Value to increase is: " + value);
+
         for(TypeFoundNode foundNode : foundNodes) {
             if(foundNode.value.equalsIgnoreCase(value)) {
+                Log.i("UploadActivity", "Node found!");
                 foundNode.increase();
-                return;
+                break;
             }
         }
 

@@ -1,5 +1,6 @@
 package com.architecture.app.screens.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.architecture.app.R;
 import com.architecture.app.components.DialogWindow;
 import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.utils.Localization;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.HomeScreenViewModel;
 
@@ -92,10 +94,18 @@ public class HomeFragment extends Fragment {
         loadImageToRow(previewImageView, architectureNode.preview);
 
         _linearLayout.addView(view);
+
+        Log.i("HomeFragment", "Added node: " + architectureNode.value);
     }
 
+    @SuppressLint("DefaultLocale")
     private void showToastWithFoundAmount(String label, int foundCount) {
-        Toast.makeText(getContext(), String.format("Вы обнаружили %s %d раз", label, foundCount), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),
+            String.format(
+                "Вы обнаружили %s %d %s",
+                label, foundCount, Localization.chooseProperEnding(foundCount, "раз", "раза", "раз")
+            ), Toast.LENGTH_LONG
+        ).show();
     }
 
     private void loadImageToRow(ImageView imageView, String preview) {
