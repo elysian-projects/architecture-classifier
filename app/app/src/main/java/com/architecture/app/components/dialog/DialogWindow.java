@@ -1,4 +1,4 @@
-package com.architecture.app.components;
+package com.architecture.app.components.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -10,42 +10,70 @@ import android.widget.TextView;
 
 import com.architecture.app.R;
 
+import java.util.HashMap;
+
 public class DialogWindow {
+    private static final HashMap<DialogVariant, Integer> variants = new HashMap<>();
+
     private final Context _context;
 
     private Dialog _dialog;
+
     private ImageView _icon;
-    private TextView _resultText;
-    private TextView _detailsText;
+    private TextView _titleText;
+    private TextView _messageText;
+
     private Button _okButton;
 
     public DialogWindow(Context context) {
         _context = context;
 
         setupDialog();
+        setupVariants();
         setupComponents();
         addEventListeners();
-        setSuccessfulState();
+
+        setVariant(DialogVariant.INFO);
     }
 
+    public DialogWindow setTitle(String title) {
+        _titleText.setText(title);
+
+        return this;
+    }
+
+    public DialogWindow setMessage(String message) {
+        _messageText.setText(message);
+
+        return this;
+    }
+
+    public DialogWindow setVariant(DialogVariant variant) {
+        try {
+            if(variant == DialogVariant.NONE) {
+                _icon.setImageResource(0);
+            } else {
+                _icon.setImageDrawable(_context.getDrawable(variants.get(variant)));
+            }
+
+        } catch(NullPointerException ignored) {}
+
+        return this;
+    }
+
+    @Deprecated
     public void show(String result, String details) {
         setLabels(result, details);
         _dialog.show();
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void setSuccessfulState() {
-        _icon.setImageDrawable(_context.getDrawable(R.drawable.success));
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void setFailedState() {
-        _icon.setImageDrawable(_context.getDrawable(R.drawable.info));
+    public void show() {
+        _dialog.show();
     }
 
     private void setLabels(String result, String details) {
-        _resultText.setText(result);
-        _detailsText.setText(details);
+        _titleText.setText(result);
+        _messageText.setText(details);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -59,10 +87,17 @@ public class DialogWindow {
         _dialog.setCancelable(false);
     }
 
+    private void setupVariants() {
+        variants.put(DialogVariant.INFO, R.drawable.info);
+        variants.put(DialogVariant.SUCCESS, R.drawable.success);
+        variants.put(DialogVariant.WARNING, R.drawable.warning);
+        variants.put(DialogVariant.DANGER, R.drawable.danger);
+    }
+
     private void setupComponents() {
         _icon = _dialog.findViewById(R.id.dialogIcon);
-        _resultText = _dialog.findViewById(R.id.summaryResultMessage);
-        _detailsText = _dialog.findViewById(R.id.resultDescription);
+        _titleText = _dialog.findViewById(R.id.summaryResultMessage);
+        _messageText = _dialog.findViewById(R.id.resultDescription);
         _okButton = _dialog.findViewById(R.id.okButton);
     }
 
