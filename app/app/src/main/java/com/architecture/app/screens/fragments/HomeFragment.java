@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
         } catch(IOException exception) {
             Log.i("HomeFragment", "Error reading data from json file!", exception);
         } catch(Exception exception) {
-            Log.i("HomaFragment", "Unknown error", exception);
+            Log.i("HomeFragment", "Unknown error", exception);
         }
     }
 
