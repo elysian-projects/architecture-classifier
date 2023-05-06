@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,8 +43,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        initializeUI(rootView);
-        rendersTypesRows();
+        _linearLayout = rootView.findViewById(R.id.linear_layout);
+        _dialog = new DialogWindow(getContext());
+
+        getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
+            if(event == Lifecycle.Event.ON_RESUME) {
+                clearLayout();
+                rendersTypesRows();
+            }
+        });
 
         return rootView;
     }
@@ -63,9 +72,8 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void initializeUI(View view) {
-        _linearLayout = view.findViewById(R.id.linear_layout);
-        _dialog = new DialogWindow(getContext());
+    private void clearLayout() {
+        _linearLayout.removeAllViews();
     }
 
     private void addNewRow(ArchitectureNode architectureNode, int foundTimes) {
