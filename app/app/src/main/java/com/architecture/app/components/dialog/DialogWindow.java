@@ -61,19 +61,8 @@ public class DialogWindow {
         return this;
     }
 
-    @Deprecated
-    public void show(String result, String details) {
-        setLabels(result, details);
-        _dialog.show();
-    }
-
     public void show() {
         _dialog.show();
-    }
-
-    private void setLabels(String result, String details) {
-        _titleText.setText(result);
-        _messageText.setText(details);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
