@@ -44,14 +44,8 @@ public class DialogWindow {
         setButtonsLayout(R.layout.button_layout_ok);
     }
 
-    public DialogWindow(Context context, ButtonClickHandler clickHandler) {
+    public DialogWindow(Context context, boolean cancellable) {
         this(context);
-
-        _clickHandler = clickHandler;
-    }
-
-    public DialogWindow(Context context, ButtonClickHandler clickHandler, boolean cancellable) {
-        this(context, clickHandler);
 
         _cancellable = cancellable;
     }
@@ -82,6 +76,14 @@ public class DialogWindow {
     public DialogWindow setButtonsLayout(int layout) {
         _buttonsPlaceholder.removeAllViews();
         _buttonsPlaceholder.addView(LayoutInflater.from(_context).inflate(layout, null));
+
+        addEventListeners();
+
+        return this;
+    }
+
+    public DialogWindow setClickHandler(ButtonClickHandler clickHandler) {
+        _clickHandler = clickHandler;
 
         addEventListeners();
 
