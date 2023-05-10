@@ -30,7 +30,7 @@ public class HomeScreenViewModel {
             for(int i = 0; i < nodesFoundData.length; i++) {
                 TypeFoundNode foundTypeNode = nodesFoundData[i];
 
-                Log.i("HomeScreenViewModel", node.value + " " + foundTypeNode.value + " " + String.valueOf(node.value.equalsIgnoreCase(foundTypeNode.value)));
+                Log.i("HomeScreenViewModel", node.value + " " + foundTypeNode.value + " " + node.value.equalsIgnoreCase(foundTypeNode.value));
 
                 if(node.value.equalsIgnoreCase(foundTypeNode.value)) {
                     foundListMatch.put(node, foundTypeNode.foundTimes);
