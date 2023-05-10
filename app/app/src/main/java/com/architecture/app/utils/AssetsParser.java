@@ -70,8 +70,6 @@ public class AssetsParser {
                 result += scanner.nextLine();
             }
 
-            Log.i("AssetsParser", result);
-
             return new JSONFileParser().parse(result, TypeFoundNode[].class);
         }
     }
