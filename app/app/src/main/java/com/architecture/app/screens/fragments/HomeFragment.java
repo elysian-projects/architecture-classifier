@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         foundCountTextView.setText(String.valueOf(foundTimes));
 
 
-        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.SUCCESS)
+        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO)
                                                                 .setTitle(architectureNode.label)
                                                                 .setMessage(architectureNode.description)
                                                                 .show();
