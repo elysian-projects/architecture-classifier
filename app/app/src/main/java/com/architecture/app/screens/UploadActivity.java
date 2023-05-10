@@ -2,6 +2,7 @@ package com.architecture.app.screens;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,11 @@ import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
 import com.architecture.app.permission.PermissionNotGrantedException;
+import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.viewModels.ArchitectureNode;
+import com.architecture.app.viewModels.TypeFoundNode;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class UploadActivity extends AppCompatActivity {
@@ -71,8 +76,34 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void classifyImage(Bitmap image) {
-        ModelLoader modelLoader = new ModelLoader(getApplicationContext());
-        openResultDialog(modelLoader.classifyImage(image));
+        ModelResponse response = new ModelLoader(getApplicationContext()).classifyImage(image);
+
+        if(response.ok()) {
+            increaseFoundNodeCounter(response.node());
+        }
+
+        openResultDialog(response);
+    }
+
+    private TypeFoundNode[] getFoundNodes() throws IOException {
+        return AssetsParser.parseTypesFoundData(getApplicationContext());
+    }
+
+    private void increaseFoundNodeCounter(ArchitectureNode node) {
+        try {
+            TypeFoundNode[] foundNodes = getFoundNodes();
+
+            for(TypeFoundNode foundNode : foundNodes) {
+                if(foundNode.value.equalsIgnoreCase(node.value)) {
+                    foundNode.increase();
+                    break;
+                }
+            }
+
+            AssetsParser.writeFoundNodes(getApplicationContext(), foundNodes);
+        } catch(IOException exception) {
+            Log.i("UploadActivity", "Increasing counter failed", exception);
+        }
     }
 
     private void setImage(Bitmap image) {
@@ -80,16 +111,16 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void openResultDialog(ModelResponse response) {
-        DialogVariant variant = response.found()
+        DialogVariant variant = response.ok()
             ? DialogVariant.SUCCESS
             : DialogVariant.WARNING;
 
-        String message = response.found()
+        String message = response.ok()
             ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
             : ModelResponse.FAILED_RESPONSE_SHORT;
 
         _dialog.setVariant(variant)
-                .setTitle(response.message())
+                .setTitle(response.node().label)
                 .setMessage(message)
                 .show();
     }

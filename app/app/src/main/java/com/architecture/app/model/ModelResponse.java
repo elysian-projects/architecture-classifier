@@ -1,22 +1,24 @@
 package com.architecture.app.model;
 
+import com.architecture.app.viewModels.ArchitectureNode;
+
 public class ModelResponse {
-    public static String SUCCESSFUL_RESPONSE_SHORT = "С большой вероятностью, на фотографии изображён этот тип архитектуры";
-    public static String FAILED_RESPONSE_SHORT = "К сожалению, нам не удалось определить этот вид архитектуры";
+    public static final String SUCCESSFUL_RESPONSE_SHORT = "С большой вероятностью, на фотографии изображён этот тип архитектуры";
+    public static final String FAILED_RESPONSE_SHORT = "К сожалению, нам не удалось определить этот вид архитектуры";
 
-    private final String _message;
-    private final boolean _found;
+    private final ArchitectureNode _node;
+    private final boolean _ok;
 
-    public ModelResponse(String message, boolean found) {
-        _message = message;
-        _found = found;
+    public ModelResponse(ArchitectureNode node, boolean ok) {
+        _node = node;
+        _ok = ok;
     }
 
-    public String message() {
-        return _message;
+    public ArchitectureNode node() {
+        return _node;
     }
 
-    public boolean found() {
-        return _found;
+    public boolean ok() {
+        return _ok;
     }
 }
