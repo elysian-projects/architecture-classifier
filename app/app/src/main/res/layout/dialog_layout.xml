@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/dialogIcon"
+        android:id="@+id/dialog_icon"
         android:layout_width="wrap_content"
         android:layout_height="30pt"
         android:layout_marginStart="8dp"
@@ -17,50 +17,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/success" />
+        app:srcCompat="@drawable/info" />
 
     <TextView
-        android:id="@+id/summaryResultMessage"
+        android:id="@+id/dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10pt"
         android:layout_marginBottom="5pt"
         android:layout_marginEnd="8dp"
-        android:text="Заголовок"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialogIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_icon" />
 
     <TextView
-        android:id="@+id/resultDescription"
+        android:id="@+id/dialog_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Описание"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summaryResultMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_title" />
 
-    <Button
-        android:id="@+id/okButton"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/dialog_button_placeholder"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:stateListAnimator="@null"
-        android:text="Ок"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultDescription" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="5pt"
+        android:layout_marginBottom="15pt"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_message"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

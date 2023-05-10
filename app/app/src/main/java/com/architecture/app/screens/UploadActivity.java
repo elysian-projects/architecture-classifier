@@ -2,7 +2,6 @@ package com.architecture.app.screens;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +10,10 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.image.RequestCodes;
 import com.architecture.app.R;
-import com.architecture.app.components.DialogWindow;
+import com.architecture.app.components.dialog.DialogWindow;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
@@ -56,8 +56,7 @@ public class UploadActivity extends AppCompatActivity {
                     }
                 });
             } catch(PermissionNotGrantedException exception) {
-                _dialog.setFailedState();
-                _dialog.show("Ошибка", "Не удалось получить доступ к источнику изображений!");
+                _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
             }
         };
     }
@@ -81,18 +80,18 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void openResultDialog(ModelResponse response) {
-        if(response.found()) {
-            _dialog.setSuccessfulState();
-        } else {
-            _dialog.setFailedState();
-        }
+        DialogVariant variant = response.found()
+            ? DialogVariant.SUCCESS
+            : DialogVariant.WARNING;
 
-        _dialog.show(
-            response.message(),
-            response.found()
-                ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
-                : ModelResponse.FAILED_RESPONSE_SHORT
-        );
+        String message = response.found()
+            ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
+            : ModelResponse.FAILED_RESPONSE_SHORT;
+
+        _dialog.setVariant(variant)
+                .setTitle(response.message())
+                .setMessage(message)
+                .show();
     }
 
     private void setupActionBarTitle() {
