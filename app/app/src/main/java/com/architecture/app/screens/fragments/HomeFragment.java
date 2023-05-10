@@ -17,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.architecture.app.R;
-import com.architecture.app.components.DialogWindow;
+import com.architecture.app.components.dialog.DialogVariant;
+import com.architecture.app.components.dialog.DialogWindow;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.utils.Localization;
 import com.architecture.app.viewModels.ArchitectureNode;
@@ -86,11 +87,11 @@ public class HomeFragment extends Fragment {
         labelTextView.setText(architectureNode.label);
         foundCountTextView.setText(String.valueOf(foundTimes));
 
-        // FIXME: update this function when `DialogWindow` is updated
-        View.OnClickListener listener = (onClickView) -> {
-            _dialog.setSuccessfulState();
-            _dialog.show(architectureNode.label, architectureNode.description);
-        };
+
+        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.SUCCESS)
+                                                                .setTitle(architectureNode.label)
+                                                                .setMessage(architectureNode.description)
+                                                                .show();
 
         labelTextView.setOnClickListener(listener);
         previewImageView.setOnClickListener(listener);
