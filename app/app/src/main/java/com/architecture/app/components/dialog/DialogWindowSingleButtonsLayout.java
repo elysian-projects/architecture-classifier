@@ -11,13 +11,8 @@ public class DialogWindowSingleButtonsLayout extends DialogWindow {
         removeExtraElements();
     }
 
-    public DialogWindowSingleButtonsLayout(Context context, ButtonClickHandler clickHandler) {
-        super(context, clickHandler);
-        removeExtraElements();
-    }
-
-    public DialogWindowSingleButtonsLayout(Context context, ButtonClickHandler clickHandler, boolean cancellable) {
-        super(context, clickHandler, cancellable);
+    public DialogWindowSingleButtonsLayout(Context context, boolean cancellable) {
+        super(context, cancellable);
         removeExtraElements();
     }
 
