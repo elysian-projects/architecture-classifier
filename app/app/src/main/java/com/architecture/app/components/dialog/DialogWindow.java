@@ -3,8 +3,12 @@ package com.architecture.app.components.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.ViewManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,13 +21,17 @@ public class DialogWindow {
 
     private final Context _context;
 
+    // These fields must be protected, as there should be a way to use them
+    // from the children classes to provide some additional features
+    protected ImageView icon;
+    protected TextView titleText;
+    protected TextView messageText;
+
     private Dialog _dialog;
+    private FrameLayout _buttonsPlaceholder;
+    private ButtonClickHandler _clickHandler = view -> {};
 
-    private ImageView _icon;
-    private TextView _titleText;
-    private TextView _messageText;
-
-    private Button _okButton;
+    private boolean _cancellable = true;
 
     public DialogWindow(Context context) {
         _context = context;
@@ -31,38 +39,65 @@ public class DialogWindow {
         setupDialog();
         setupVariants();
         setupComponents();
-        addEventListeners();
 
         setVariant(DialogVariant.INFO);
+        setButtonsLayout(R.layout.button_layout_ok);
+    }
+
+    public DialogWindow(Context context, ButtonClickHandler clickHandler) {
+        this(context);
+
+        _clickHandler = clickHandler;
+    }
+
+    public DialogWindow(Context context, ButtonClickHandler clickHandler, boolean cancellable) {
+        this(context, clickHandler);
+
+        _cancellable = cancellable;
     }
 
     public DialogWindow setTitle(String title) {
-        _titleText.setText(title);
+        titleText.setText(title);
 
         return this;
     }
 
     public DialogWindow setMessage(String message) {
-        _messageText.setText(message);
+        messageText.setText(message);
 
         return this;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public DialogWindow setVariant(DialogVariant variant) {
         try {
-            if(variant == DialogVariant.NONE) {
-                _icon.setImageResource(0);
-            } else {
-                _icon.setImageDrawable(_context.getDrawable(variants.get(variant)));
-            }
+            icon.setImageDrawable(_context.getDrawable(variants.get(variant)));
+        } catch(NullPointerException exception) {
+            Log.i("DialogWindow", "Count not set dialog window variant", exception);
+        }
 
-        } catch(NullPointerException ignored) {}
+        return this;
+    }
+
+    public DialogWindow setButtonsLayout(int layout) {
+        _buttonsPlaceholder.removeAllViews();
+        _buttonsPlaceholder.addView(LayoutInflater.from(_context).inflate(layout, null));
+
+        addEventListeners();
 
         return this;
     }
 
     public void show() {
         _dialog.show();
+    }
+
+    protected <T extends View> void removeItem(T item) {
+        try {
+            ((ViewManager)item.getParent()).removeView(item);
+        } catch(Exception exception) {
+            Log.i("DialogWindow", "Unable to remove view!", exception);
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -73,10 +108,14 @@ public class DialogWindow {
         _dialog.getWindow().setBackgroundDrawable(_context.getDrawable(R.drawable.dialog_background));
         _dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         _dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
-        _dialog.setCancelable(false);
+        _dialog.setCancelable(_cancellable);
     }
 
     private void setupVariants() {
+        if(!variants.isEmpty()) {
+            return;
+        }
+
         variants.put(DialogVariant.INFO, R.drawable.info);
         variants.put(DialogVariant.SUCCESS, R.drawable.success);
         variants.put(DialogVariant.WARNING, R.drawable.warning);
@@ -84,13 +123,26 @@ public class DialogWindow {
     }
 
     private void setupComponents() {
-        _icon = _dialog.findViewById(R.id.dialogIcon);
-        _titleText = _dialog.findViewById(R.id.summaryResultMessage);
-        _messageText = _dialog.findViewById(R.id.resultDescription);
-        _okButton = _dialog.findViewById(R.id.okButton);
+        icon = _dialog.findViewById(R.id.dialog_icon);
+        titleText = _dialog.findViewById(R.id.dialog_title);
+        messageText = _dialog.findViewById(R.id.dialog_message);
+        _buttonsPlaceholder = _dialog.findViewById(R.id.dialog_button_placeholder);
     }
 
-    private void addEventListeners() {
-        _okButton.setOnClickListener(view -> _dialog.dismiss());
+    private void addEventListeners() throws IllegalStateException {
+        View layout = _buttonsPlaceholder.getChildAt(0);
+
+        if(layout instanceof ViewGroup == false) {
+            throw new IllegalStateException("Invalid layout for buttons was provided!");
+        }
+
+        ViewGroup viewGroup = (ViewGroup)layout;
+
+        for(int i = 0; i < viewGroup.getChildCount(); i++) {
+            viewGroup.getChildAt(i).setOnClickListener(view -> {
+                _clickHandler.execute(view);
+                _dialog.dismiss();
+            });
+        }
     }
 }
