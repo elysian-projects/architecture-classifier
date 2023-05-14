@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Theme.App" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
@@ -15,8 +15,6 @@
         <!-- Navigation bar color. -->
         <item name="android:navigationBarColor">#C1C0C0</item>
         <item name="android:windowLightNavigationBar">true</item>
-
-
         <!-- Customize your theme here. -->
         <item name="android:windowAnimationStyle">@style/animation</item>
     </style>
