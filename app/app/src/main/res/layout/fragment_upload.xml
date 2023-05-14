@@ -9,41 +9,56 @@
     <ImageView
         android:id="@+id/imagePreview"
         android:layout_width="412dp"
-        android:layout_height="411dp"
+        android:layout_height="330dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <TextView
+        android:id="@+id/upload_result_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imagePreview"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="21sp"
+        android:text="Для получения информации загрузите изображение"
+        android:textAlignment="center"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/upload_result_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upload_result_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:text="" />
+
     <Button
-        android:id="@+id/openGalleryButton"
+        android:id="@+id/upload_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/divider"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Галерея" />
-
-
-    <Button
-        android:id="@+id/openCameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Камера"
-        android:layout_toLeftOf="@id/divider"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="50dp" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="?android:attr/listDivider" />
+        android:layout_margin="10pt"
+        android:layout_marginStart="10pt"
+        android:layout_marginTop="10pt"
+        android:layout_marginEnd="10pt"
+        android:layout_marginBottom="821dp"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="Загрузить фото" />
 
 </RelativeLayout>
