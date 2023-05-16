@@ -3,6 +3,7 @@ package com.architecture.app.screens.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
@@ -13,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.architecture.app.R;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
+import com.architecture.app.databinding.RowArchitectureTypeBinding;
+import com.architecture.app.databinding.FragmentHomeBinding;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.utils.Localization;
 import com.architecture.app.viewModels.ArchitectureNode;
@@ -41,10 +42,10 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater);
 
-        _linearLayout = rootView.findViewById(R.id.linear_layout);
+        _linearLayout = binding.linearLayout;
         _dialog = new DialogWindow(getContext());
 
         getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return rootView;
+        return binding.getRoot();
     }
 
     private void rendersTypesRows() {
@@ -78,31 +79,24 @@ public class HomeFragment extends Fragment {
     }
 
     private void addNewRow(ArchitectureNode architectureNode, int foundTimes) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.row_architecture_type, null);
+        RowArchitectureTypeBinding rowArchitectureTypeBinding = RowArchitectureTypeBinding.inflate(getLayoutInflater());
 
-        TextView labelTextView = view.findViewById(R.id.architecture_type_title);
-        TextView foundCountTextView = view.findViewById(R.id.architecture_type_found_count);
-        ImageView previewImageView = view.findViewById(R.id.architecture_type_image_preview);
-
-        labelTextView.setText(architectureNode.label);
-        foundCountTextView.setText(String.valueOf(foundTimes));
-
+        rowArchitectureTypeBinding.architectureTypeTitle.setText(architectureNode.label);
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setText(String.valueOf(foundTimes));
 
         View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO)
                                                                 .setTitle(architectureNode.label)
                                                                 .setMessage(architectureNode.description)
                                                                 .show();
 
-        labelTextView.setOnClickListener(listener);
-        previewImageView.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeTitle.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeImagePreview.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setOnClickListener(onClickView ->
+            showToastWithFoundAmount(architectureNode.label, foundTimes)
+        );
 
-        foundCountTextView.setOnClickListener(onClickView -> {
-            showToastWithFoundAmount(architectureNode.label, foundTimes);
-        });
-
-        loadImageToRow(previewImageView, architectureNode.preview);
-
-        _linearLayout.addView(view);
+        loadImageToRow(rowArchitectureTypeBinding.architectureTypeImagePreview, architectureNode.preview);
+        _linearLayout.addView(rowArchitectureTypeBinding.getRoot());
 
         Log.i("HomeFragment", "Added node: " + architectureNode.value);
     }
