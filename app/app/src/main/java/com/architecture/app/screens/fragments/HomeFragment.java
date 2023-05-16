@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        _homeScreenModel = new HomeScreenViewModel(requireContext());
+        _homeScreenModel = new HomeScreenViewModel();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
 
     private void rendersTypesRows() {
         try {
-            HashMap<ArchitectureNode, Integer> layoutData = _homeScreenModel.getLayoutData();
+            HashMap<ArchitectureNode, Integer> layoutData = _homeScreenModel.getLayoutData(requireContext());
 
             for(ArchitectureNode node : layoutData.keySet()) {
                 addNewRow(node, layoutData.get(node));
