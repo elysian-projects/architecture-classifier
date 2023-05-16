@@ -100,8 +100,8 @@ public class UploadFragment extends Fragment {
     }
 
     private void classifyImage(Bitmap image) {
-        ModelLoader modelLoader = new ModelLoader(requireContext());
-        ModelResponse response = modelLoader.classifyImage(image);
+        ModelLoader modelLoader = new ModelLoader();
+        ModelResponse response = modelLoader.classifyImage(image, requireContext());
 
         if(response.ok()) {
             increaseFoundNodeCounter(response.node());
