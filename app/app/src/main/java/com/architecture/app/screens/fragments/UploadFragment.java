@@ -3,6 +3,7 @@ package com.architecture.app.screens.fragments;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -10,14 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.architecture.app.R;
 import com.architecture.app.components.dialog.ButtonClickHandler;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
 import com.architecture.app.components.dialog.DialogWindowSingleButtonsLayout;
+import com.architecture.app.databinding.FragmentUploadBinding;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
@@ -32,40 +32,29 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 
 public class UploadFragment extends Fragment {
-    private ImageView _image;
-    private TextView _resultTitle;
-    private TextView _resultDescription;
-    private Button _uploadImageButton;
+    private FragmentUploadBinding _binding;
+
     private DialogWindow _dialog;
     private DialogWindowSingleButtonsLayout _imageUploadDialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
+        _binding = FragmentUploadBinding.inflate(inflater, container, false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_upload, container, false);
-
-        initializeUIComponents(rootView);
+        initializeUIComponents();
         setEventListeners();
         openUploadDialog();
 
-        return rootView;
+        return _binding.getRoot();
     }
 
-    private void initializeUIComponents(View view) {
-        _image = view.findViewById(R.id.imagePreview);
-        _resultTitle = view.findViewById(R.id.upload_result_title);
-        _resultDescription = view.findViewById(R.id.upload_result_description);
-        _uploadImageButton = view.findViewById(R.id.upload_image_button);
+    private void initializeUIComponents() {
         _dialog = new DialogWindow(getContext());
         _imageUploadDialog = new DialogWindowSingleButtonsLayout(getContext());
     }
 
     private void setEventListeners() {
-        _uploadImageButton.setOnClickListener(view -> openUploadDialog());
+        _binding.uploadImageButton.setOnClickListener(view -> openUploadDialog());
     }
 
     private void openUploadDialog() {
@@ -138,12 +127,12 @@ public class UploadFragment extends Fragment {
     }
 
     private void setImage(Bitmap image) {
-        _image.setImageBitmap(image);
+        _binding.imagePreview.setImageBitmap(image);
     }
 
     private void setTextInfo(ModelResponse response) {
-        _resultTitle.setText(response.node().label);
-        _resultDescription.setText(response.node().description);
+        _binding.uploadResultTitle.setText(response.node().label);
+        _binding.uploadResultDescription.setText(response.node().description);
     }
 
     private void openResultDialog(ModelResponse response) {
