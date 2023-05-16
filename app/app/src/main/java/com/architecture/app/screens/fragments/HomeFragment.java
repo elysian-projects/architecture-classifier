@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         rowArchitectureTypeBinding.architectureTypeTitle.setText(architectureNode.label);
         rowArchitectureTypeBinding.architectureTypeFoundCount.setText(String.valueOf(foundTimes));
 
-        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO)
+        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO, requireContext())
                                                                 .setTitle(architectureNode.label)
                                                                 .setMessage(architectureNode.description)
                                                                 .show();

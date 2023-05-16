@@ -59,7 +59,7 @@ public class UploadFragment extends Fragment {
 
     private void openUploadDialog() {
         _imageUploadDialog
-            .setButtonsLayout(R.layout.dialod_upload_fragment)
+            .setButtonsLayout(R.layout.dialod_upload_fragment, requireContext())
             .setClickHandler(createClickHandler)
             .show();
     }
@@ -77,10 +77,10 @@ public class UploadFragment extends Fragment {
             ).runLoader(this::runClassification, requireContext());
 
         } catch(PermissionNotGrantedException exception) {
-            _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
+            _dialog.setVariant(DialogVariant.DANGER, requireContext()).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
             Log.i("UploadFragment", "Access was not acquired!", exception);
         } catch(Exception exception) {
-            _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Неизвестная ошибка!").show();
+            _dialog.setVariant(DialogVariant.DANGER, requireContext()).setTitle("Ошибка!").setMessage("Неизвестная ошибка!").show();
             Log.i("UploadFragment", "Unhandled error!", exception);
         }
     };
@@ -92,7 +92,7 @@ public class UploadFragment extends Fragment {
         } catch(Exception exception) {
             Log.i("UploadFragment", "Unhandled error!", exception);
 
-            _dialog.setVariant(DialogVariant.DANGER)
+            _dialog.setVariant(DialogVariant.DANGER, requireContext())
                     .setTitle("Ошибка!")
                     .setMessage("Произошла неизвестная ошибка!")
                     .show();
@@ -150,7 +150,7 @@ public class UploadFragment extends Fragment {
             ? ModelResponse.SUCCESSFUL_RESPONSE_SHORT
             : ModelResponse.FAILED_RESPONSE_SHORT;
 
-        _dialog.setVariant(variant)
+        _dialog.setVariant(variant, requireContext())
                 .setTitle(response.node().label)
                 .setMessage(message)
                 .show();

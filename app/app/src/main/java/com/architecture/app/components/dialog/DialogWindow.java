@@ -13,14 +13,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.architecture.app.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class DialogWindow {
     private static final HashMap<DialogVariant, Integer> variants = new HashMap<>();
-
-    private final Context _context;
 
     private Dialog _dialog;
     private ImageView _icon;
@@ -31,18 +33,16 @@ public class DialogWindow {
 
     private boolean _cancellable = true;
 
-    public DialogWindow(Context context) {
-        _context = context;
-
-        setupDialog();
+    public DialogWindow(@NonNull Context context) {
+        setupDialog(context);
         setupVariants();
         setupComponents();
 
-        setVariant(DialogVariant.INFO);
-        setButtonsLayout(R.layout.button_layout_ok);
+        setVariant(DialogVariant.INFO, context);
+        setButtonsLayout(R.layout.button_layout_ok, context);
     }
 
-    public DialogWindow(Context context, boolean cancellable) {
+    public DialogWindow(@NonNull Context context, boolean cancellable) {
         this(context);
 
         _cancellable = cancellable;
@@ -61,9 +61,9 @@ public class DialogWindow {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public DialogWindow setVariant(DialogVariant variant) {
+    public DialogWindow setVariant(DialogVariant variant, @NotNull Context context) {
         try {
-            _icon.setImageDrawable(_context.getDrawable(variants.get(variant)));
+            _icon.setImageDrawable(context.getDrawable(variants.get(variant)));
         } catch(NullPointerException exception) {
             Log.i("DialogWindow", "Count not set dialog window variant", exception);
         }
@@ -71,9 +71,9 @@ public class DialogWindow {
         return this;
     }
 
-    public DialogWindow setButtonsLayout(int layout) {
+    public DialogWindow setButtonsLayout(int layout, @NotNull Context context) {
         _buttonsPlaceholder.removeAllViews();
-        _buttonsPlaceholder.addView(LayoutInflater.from(_context).inflate(layout, null));
+        _buttonsPlaceholder.addView(LayoutInflater.from(context).inflate(layout, null));
 
         addEventListeners();
 
@@ -113,11 +113,11 @@ public class DialogWindow {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void setupDialog() {
-        _dialog = new Dialog(_context);
+    private void setupDialog(Context context) {
+        _dialog = new Dialog(context);
 
         _dialog.setContentView(R.layout.dialog_layout);
-        _dialog.getWindow().setBackgroundDrawable(_context.getDrawable(R.drawable.dialog_background));
+        _dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.dialog_background));
         _dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         _dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
         _dialog.setCancelable(_cancellable);
