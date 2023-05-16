@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
@@ -25,7 +26,7 @@ public class CameraImageLoader extends AbstractImageLoader {
             try {
                 _callback.run((Bitmap)success.getData().getExtras().get("data"));
             } catch(Exception exception) {
-                _callback.run(null);
+                Log.i("CameraImageLoader", "Could not load image!", exception);
             }
         });
     }

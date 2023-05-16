@@ -71,9 +71,7 @@ public class UploadFragment extends Fragment {
                 : RequestCodes.GALLERY;
 
             new ImageLoaderFactory().create(requestCode, requireActivity().getActivityResultRegistry(), requireContext()).runLoader(image -> {
-                if(image != null) {
-                    runClassification(image);
-                }
+                runClassification(image);
             });
         } catch(PermissionNotGrantedException exception) {
             _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
@@ -84,7 +82,7 @@ public class UploadFragment extends Fragment {
         }
     };
 
-    private void runClassification(Bitmap image) {
+    private void runClassification(@NonNull Bitmap image) {
         try {
             setImage(image);
             classifyImage(image);
