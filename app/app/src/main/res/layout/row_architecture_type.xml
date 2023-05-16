@@ -32,8 +32,7 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="50pt"
-            android:src="@drawable/card_background_gradient"
-            tools:srcCompat="@drawable/card_background_gradient" />
+            android:src="@drawable/card_background_gradient" />
 
         <TextView
             android:id="@+id/architecture_type_found_count"
