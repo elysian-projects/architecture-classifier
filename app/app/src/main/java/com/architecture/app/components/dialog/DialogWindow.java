@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -150,10 +151,20 @@ public class DialogWindow {
         ViewGroup viewGroup = (ViewGroup)layout;
 
         for(int i = 0; i < viewGroup.getChildCount(); i++) {
-            viewGroup.getChildAt(i).setOnClickListener(view -> {
+            View item = viewGroup.getChildAt(i);
+
+            if(!shouldAddClickListener(item)) {
+                continue;
+            }
+
+            item.setOnClickListener(view -> {
                 _clickHandler.execute(view);
                 _dialog.dismiss();
             });
         }
+    }
+
+    private boolean shouldAddClickListener(View view) {
+        return view instanceof Button;
     }
 }
