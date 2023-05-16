@@ -74,7 +74,7 @@ public class UploadFragment extends Fragment {
                 requestCode,
                 requireActivity().getActivityResultRegistry(),
                 requireContext()
-            ).runLoader(this::runClassification);
+            ).runLoader(this::runClassification, requireContext());
 
         } catch(PermissionNotGrantedException exception) {
             _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
