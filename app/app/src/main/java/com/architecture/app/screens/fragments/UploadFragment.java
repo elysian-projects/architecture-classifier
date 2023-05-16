@@ -89,7 +89,12 @@ public class UploadFragment extends Fragment {
             setImage(image);
             classifyImage(image);
         } catch(Exception exception) {
-            exception.printStackTrace();
+            Log.i("UploadFragment", "Unhandled error!", exception);
+
+            _dialog.setVariant(DialogVariant.DANGER)
+                    .setTitle("Ошибка!")
+                    .setMessage("Произошла неизвестная ошибка!")
+                    .show();
         }
     }
 
