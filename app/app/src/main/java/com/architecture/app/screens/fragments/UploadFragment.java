@@ -66,13 +66,16 @@ public class UploadFragment extends Fragment {
 
     private final ButtonClickHandler createClickHandler = view -> {
         try {
-            int requestCode = ((Button) view).getText() == getString(R.string.camera_upload_button_value)
+            int requestCode = ((Button) view).getId() == R.id.camera_button
                 ? RequestCodes.CAMERA
                 : RequestCodes.GALLERY;
 
-            new ImageLoaderFactory().create(requestCode, requireActivity().getActivityResultRegistry(), requireContext()).runLoader(image -> {
-                runClassification(image);
-            });
+            new ImageLoaderFactory().create(
+                requestCode,
+                requireActivity().getActivityResultRegistry(),
+                requireContext()
+            ).runLoader(this::runClassification);
+
         } catch(PermissionNotGrantedException exception) {
             _dialog.setVariant(DialogVariant.DANGER).setTitle("Ошибка!").setMessage("Не удалось получить доступ к источнику изображений!").show();
             Log.i("UploadFragment", "Access was not acquired!", exception);
