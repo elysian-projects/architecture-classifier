@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,14 +46,15 @@ public class HomeFragment extends Fragment {
         _linearLayout = binding.linearLayout;
         _dialog = new DialogWindow(getContext());
 
-        getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
-            if(event == Lifecycle.Event.ON_RESUME) {
-                clearLayout();
-                rendersTypesRows();
-            }
-        });
-
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        clearLayout();
+        rendersTypesRows();
     }
 
     private void rendersTypesRows() {
