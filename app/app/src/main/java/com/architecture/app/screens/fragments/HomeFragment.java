@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
         FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater);
 
         _linearLayout = binding.linearLayout;
-        _dialog = new DialogWindow(getContext());
+        _dialog = new DialogWindow(requireContext());
 
         return binding.getRoot();
     }
@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("DefaultLocale")
     private void showToastWithFoundAmount(String label, int foundCount) {
-        Toast.makeText(getContext(),
+        Toast.makeText(requireContext(),
             String.format(
                 "Вы обнаружили %s %d %s",
                 label, foundCount, Localization.chooseProperEnding(foundCount, "раз", "раза", "раз")

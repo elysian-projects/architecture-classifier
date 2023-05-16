@@ -49,8 +49,8 @@ public class UploadFragment extends Fragment {
     }
 
     private void initializeUIComponents() {
-        _dialog = new DialogWindow(getContext());
-        _imageUploadDialog = new DialogWindowSingleButtonsLayout(getContext());
+        _dialog = new DialogWindow(requireContext());
+        _imageUploadDialog = new DialogWindowSingleButtonsLayout(requireContext());
     }
 
     private void setEventListeners() {
@@ -70,7 +70,7 @@ public class UploadFragment extends Fragment {
                 ? RequestCodes.CAMERA
                 : RequestCodes.GALLERY;
 
-            new ImageLoaderFactory().create(requestCode, getActivity().getActivityResultRegistry(), getContext()).runLoader(image -> {
+            new ImageLoaderFactory().create(requestCode, requireActivity().getActivityResultRegistry(), requireContext()).runLoader(image -> {
                 if(image != null) {
                     runClassification(image);
                 }
