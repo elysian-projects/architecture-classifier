@@ -8,13 +8,15 @@ import androidx.annotation.NonNull;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 
-import java.io.IOException;
-
-import com.architecture.app.ml.Model;
+import com.architecture.app.ml.Model4;
+import com.architecture.app.viewModels.ArchitectureNode;
 
 public class ModelLoader {
+    private static final ArchitectureNode DEFAULT_ERROR_NODE = new ArchitectureNode("Ошибка!", "error", "", "", "");
+
     private static final int IMAGE_WIDTH = 180;
     private static final int IMAGE_HEIGHT = 180;
+
 
     private final Context _context;
 
@@ -22,13 +24,13 @@ public class ModelLoader {
         _context = context;
     }
 
-    public String classifyImage(Bitmap image) {
+    public ModelResponse classifyImage(Bitmap image) {
         try {
             if(image == null) {
-                throw new IOException("Could not load image!");
+                return new ModelResponse(DEFAULT_ERROR_NODE, false);
             }
 
-            Model model = Model.newInstance(_context);
+            Model4 model = Model4.newInstance(_context);
             Bitmap rescaledImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, true);
 
             TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
@@ -41,12 +43,12 @@ public class ModelLoader {
 
             model.close();
 
-            ModelOutputHandler outputHandler = new ModelOutputHandler(_context);
-            return outputHandler.computeModelClassificationResult(output);
-        } catch (IOException exception) {
-            return exception.getMessage();
-        } catch (InvalidModelResultException exception) {
-            return String.format("Classification error: %s", exception.getMessage());
+            ArchitectureNode definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
+            return new ModelResponse(definedClass, true);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return new ModelResponse(DEFAULT_ERROR_NODE, false);
         }
     }
 }

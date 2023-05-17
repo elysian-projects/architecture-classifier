@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/home"
+        android:id="@+id/home"
+        android:title="Home"/>
+    <item
+        android:icon="@drawable/upload"
+        android:id="@+id/upload"
+        android:title="Camera"/>
+    <item
+        android:icon="@drawable/star_solid"
+        android:id="@+id/check"
+        android:title="Achievements"/>
+    <item
+        android:icon="@drawable/circle_question"
+        android:id="@+id/question"
+        android:title="Question"/>
+
+</menu>

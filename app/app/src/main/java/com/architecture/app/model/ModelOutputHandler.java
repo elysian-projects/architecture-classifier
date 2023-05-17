@@ -1,23 +1,26 @@
 package com.architecture.app.model;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.viewModels.ArchitectureNode;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ModelOutputHandler {
-    private List<String> _classNames;
+    private final ArchitectureNode[] _nodes;
 
     public ModelOutputHandler(Context context) throws IOException {
-        ModelFileReader fileReader = new ModelFileReader(context);
-        _classNames = fileReader.readClassNamesList();
+        _nodes = AssetsParser.parseArchitectureTypes(context);
     }
 
-    public String computeModelClassificationResult(float[] output) throws InvalidModelResultException {
+    public ArchitectureNode computeModelClassificationResult(float[] output) throws InvalidModelResultException {
         float maxValue = Float.MIN_VALUE;
         int maxIndex = 0;
+
         for(int i = 0; i < output.length; i++) {
-            System.out.println(output[i]);
+            Log.i("ModelOutputHandler", String.valueOf(output[i]));
 
             if(output[i] > maxValue) {
                 maxValue = output[i];
@@ -25,10 +28,10 @@ public class ModelOutputHandler {
             }
         }
 
-        if(_classNames.size() - 1 < maxIndex) {
+        if(_nodes.length - 1 < maxIndex) {
             throw new InvalidModelResultException();
         }
 
-        return _classNames.get(maxIndex);
+        return _nodes[maxIndex];
     }
 }

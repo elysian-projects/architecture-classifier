@@ -1,24 +1,27 @@
 package com.architecture.app.image;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultRegistry;
 
-import java.io.FileNotFoundException;
+import com.architecture.app.permission.PermissionNotGrantedException;
 
 public abstract class AbstractImageLoader {
+    private final ActivityResultRegistry _activityResultRegistry;
     private final Context _context;
 
-    public AbstractImageLoader(Context context) {
+    public AbstractImageLoader(ActivityResultRegistry activityResultRegistry, Context context) {
+        _activityResultRegistry = activityResultRegistry;
         _context = context;
     }
 
-    public Context getContext() {
+    protected Context getContext() {
         return _context;
     }
 
-    @Nullable
-    public abstract Bitmap load(Intent intent) throws FileNotFoundException;
+    protected ActivityResultRegistry getRegistry() {
+        return _activityResultRegistry;
+    }
+
+    public abstract void runLoader(LoaderCallback callback) throws PermissionNotGrantedException;
 }
