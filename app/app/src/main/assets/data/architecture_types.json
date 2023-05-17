@@ -2,36 +2,36 @@
   {
     "label": "Древнеегипетский стиль",
     "value": "ancient_egypt",
-    "description": "Описание для Древнего Египта",
+    "description": "(с 3000г. до н. э. по 1555-1090гг. до и. э.) Древнеегипетская архитектура отличалась использованием камня и глины вместо дерева.",
     "preview": "ancient_egypt.jpg",
-    "infoLink": "link"
+    "infoLink": "https://ru.wikipedia.org/wiki/%D0%90%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%B0_%D0%94%D1%80%D0%B5%D0%B2%D0%BD%D0%B5%D0%B3%D0%BE_%D0%95%D0%B3%D0%B8%D0%BF%D1%82%D0%B0"
   },
   {
     "label": "Борокко",
     "value": "baroque",
-    "description": "Описание для Борокко",
+    "description": "(с конца XVI века по XVIII век) Ключевой особенностью барокко является стремление к созданию избытка форм, украшений и декоративных элементов.",
     "preview": "baroque.jpg",
     "infoLink": "link"
   },
   {
     "label": "Древнегреческий стиль",
     "value": "greek_revival",
-    "description": "Описание для Греческого стиля",
+    "description": "(с VII в. до н. э. по 90 до н. э.) Основной особенностью древнегреческой архитектуры является использование колонн как важного элемента конструкции зданий.",
     "preview": "greek_revival.jpg",
-    "infoLink": "link"
+    "infoLink": "https://ru.wikipedia.org/wiki/%D0%90%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%B0_%D0%94%D1%80%D0%B5%D0%B2%D0%BD%D0%B5%D0%B9_%D0%93%D1%80%D0%B5%D1%86%D0%B8%D0%B8"
   },
   {
     "label": "Российское Возрождение",
     "value": "russian_revival",
-    "description": "Описание для Русского Возрождения",
+    "description": "(c 1825 год по 1825 год) В основе русского Возрождения лежал научный интерес к историческим памятникам страны.",
     "preview": "russian_revival.jpg",
-    "infoLink": "link"
+    "infoLink": "https://en.wikipedia.org/wiki/Russian_Revival_architecture"
   },
   {
     "label": "Панельки",
     "value": "panels",
-    "description": "Описание для ",
+    "description": "(с 1955 по начало 70-ых) Главной особенностью данного стиля является однообразность. Основной материал, используемый для строительства - это готовые бетонные панели",
     "preview": "panels.png",
-    "infoLink": "link"
+    "infoLink": "https://ru.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BD%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5_%D0%B4%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5"
   }
 ]
