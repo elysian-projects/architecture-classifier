@@ -17,8 +17,8 @@ public class DialogWindowSingleButtonsLayout extends DialogWindow {
     }
 
     private void removeExtraElements() {
-        removeItem(icon);
-        removeItem(titleText);
-        removeItem(messageText);
+        removeItem(getIcon());
+        removeItem(getTitleText());
+        removeItem(getMessageText());
     }
 }

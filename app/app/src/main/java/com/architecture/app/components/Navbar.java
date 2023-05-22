@@ -13,19 +13,15 @@ import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.fragments.UploadFragment;
 
 public class Navbar {
-    private AppCompatActivity _context;
-
     public void attachToLayout(AppCompatActivity context) {
-        _context = context;
-
         ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(context.getLayoutInflater());
         context.setContentView(binding.getRoot());
 
-        initializeButtons(binding);
+        initializeButtons(binding, context);
     }
 
-    private void initializeButtons(ActivityNavbarBinding binding) {
-        replaceFragment(new HomeFragment());
+    private void initializeButtons(ActivityNavbarBinding binding, AppCompatActivity context) {
+        replaceFragment(new HomeFragment(), context);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragmentToLoad;
@@ -47,16 +43,16 @@ public class Navbar {
                     return false;
             }
 
-            replaceFragment(fragmentToLoad);
+            replaceFragment(fragmentToLoad, context);
 
             return true;
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = _context.getSupportFragmentManager();
+    private void replaceFragment(Fragment fragment, AppCompatActivity context) {
+        FragmentManager fragmentManager = context.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 }

@@ -4,16 +4,20 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
-import androidx.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.FileNotFoundException;
 
 public class Utils {
-    @Nullable
-    public static Bitmap getBitmapFromUri(Uri uri, Context context) {
+    @NotNull
+    public static Bitmap getBitmapFromUri(Uri uri, Context context) throws FileNotFoundException {
         try {
             return BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
-        } catch(Exception exception) {
-            return null;
+        } catch(FileNotFoundException exception) {
+            Log.i("Utils", "File was not found!", exception);
+            throw exception;
         }
     }
 }

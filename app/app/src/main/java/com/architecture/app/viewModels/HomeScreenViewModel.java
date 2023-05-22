@@ -12,15 +12,9 @@ import java.util.HashMap;
 public class HomeScreenViewModel {
     private static ArchitectureNode[] _nodes;
 
-    private final Context _context;
-
-    public HomeScreenViewModel(Context context) {
-        _context = context;
-    }
-
-    public HashMap<ArchitectureNode, Integer> getLayoutData() throws IOException {
-        ArchitectureNode[] nodes = readNodesFromStorage();
-        TypeFoundNode[] nodesFoundData = readNodesFoundData();
+    public HashMap<ArchitectureNode, Integer> getLayoutData(Context context) throws IOException {
+        ArchitectureNode[] nodes = readNodesFromStorage(context);
+        TypeFoundNode[] nodesFoundData = readNodesFoundData(context);
 
         Log.i("HomeScreenViewModel", new Gson().toJson(nodesFoundData));
 
@@ -49,16 +43,16 @@ public class HomeScreenViewModel {
         return foundListMatch;
     }
 
-    private ArchitectureNode[] readNodesFromStorage() throws IOException {
+    private ArchitectureNode[] readNodesFromStorage(Context context) throws IOException {
         if(_nodes == null) {
-            _nodes = AssetsParser.parseArchitectureTypes(_context);
+            _nodes = AssetsParser.parseArchitectureTypes(context);
             Log.i("HomeFragment", "Successfully read nodes from storage!");
         }
 
         return _nodes;
     }
 
-    private TypeFoundNode[] readNodesFoundData() throws IOException {
-        return AssetsParser.parseTypesFoundData(_context);
+    private TypeFoundNode[] readNodesFoundData(Context context) throws IOException {
+        return AssetsParser.parseTypesFoundData(context);
     }
 }

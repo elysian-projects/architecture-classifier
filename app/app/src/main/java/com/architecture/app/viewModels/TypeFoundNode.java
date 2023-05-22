@@ -3,7 +3,7 @@ package com.architecture.app.viewModels;
 public class TypeFoundNode {
     public static final int DEFAULT_FOUND_TIMES = 0;
 
-    public String value;
+    public final String value;
     public int foundTimes;
 
     public TypeFoundNode(String value, int foundTimes) {

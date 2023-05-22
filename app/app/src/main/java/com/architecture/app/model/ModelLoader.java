@@ -17,20 +17,9 @@ public class ModelLoader {
     private static final int IMAGE_WIDTH = 180;
     private static final int IMAGE_HEIGHT = 180;
 
-
-    private final Context _context;
-
-    public ModelLoader(@NonNull Context context) {
-        _context = context;
-    }
-
-    public ModelResponse classifyImage(Bitmap image) {
+    public ModelResponse classifyImage(@NonNull Bitmap image, @NonNull Context context) {
         try {
-            if(image == null) {
-                return new ModelResponse(DEFAULT_ERROR_NODE, false);
-            }
-
-            Model4 model = Model4.newInstance(_context);
+            Model4 model = Model4.newInstance(context);
             Bitmap rescaledImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, true);
 
             TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
@@ -43,7 +32,7 @@ public class ModelLoader {
 
             model.close();
 
-            ArchitectureNode definedClass = new ModelOutputHandler(_context).computeModelClassificationResult(output);
+            ArchitectureNode definedClass = new ModelOutputHandler(context).computeModelClassificationResult(output);
             return new ModelResponse(definedClass, true);
 
         } catch (Exception exception) {
