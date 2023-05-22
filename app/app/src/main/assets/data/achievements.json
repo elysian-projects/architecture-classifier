@@ -1,0 +1,52 @@
+[
+  {
+    "label": "А вы видели мумию?",
+    "description": "Найти 3 египетских стиля",
+    "preview": "achievements/mummy.jpg"
+  },
+  {
+    "label": "Фараон",
+    "description": "Найти 10 египетских стилей",
+    "preview": "achievements/pharaoh.jpg"
+  },
+  {
+    "label": "Это искусство!",
+    "description": "Найти 5 борокко",
+    "preview": "achievements/art.jpg"
+  },
+  {
+    "label": "Папа Римский",
+    "description": "Найти 10 борокко",
+    "preview": "achievements/papa.jpg"
+  },
+  {
+    "label": "В мире майнкрафт",
+    "description": "Найти 5 панелек",
+    "preview": "achievements/house.jpg"
+  },
+  {
+    "label": "Гордость Советского Союза",
+    "description": "Найти 10 панелек",
+    "preview": "achievements/siblings.jpg"
+  },
+  {
+    "label": "Иван Васильевич меняет профессию",
+    "description": "Найти 3 российского возрождения",
+    "preview": "achievements/ivan.jpg"
+  },
+  {
+    "label": "А медведи с балалайками будут?",
+    "description": "Найти 10 российского возрождения",
+    "preview": "achievements/bear.jpg"
+  },
+  {
+    "label": "Минотавр не пробегал?",
+    "description": "Найти 3 древнегреческих",
+    "preview": "achievements/minotaur.jpg"
+  },
+  {
+    "label": "Аполлон",
+    "description": "Найти 10 древнегреческих",
+    "preview": "achievements/apollon.jpg"
+  }
+]

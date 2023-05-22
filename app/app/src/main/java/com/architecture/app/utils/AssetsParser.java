@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.architecture.app.constants.Assets;
+import com.architecture.app.viewModels.Achievement;
 import com.architecture.app.viewModels.TypeFoundNode;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import java.util.Scanner;
 
 public class AssetsParser {
     private static final List<ArchitectureNode> _cachedArchitectureTypes = new ArrayList<>();
+    private static final List<Achievement> _cachedAchievements = new ArrayList<>();
 
     public static Bitmap readPreviewImage(Context context, String image) throws IOException {
         return BitmapFactory.decodeStream(context.getAssets().open("previews/" + image));
@@ -72,6 +74,21 @@ public class AssetsParser {
 
             return new JSONFileParser().parse(result, TypeFoundNode[].class);
         }
+    }
+
+    public static Achievement[] parseAchievements(Context context) throws IOException {
+        if(_cachedAchievements.size() != 0) {
+            return _cachedAchievements.toArray(new Achievement[] {});
+        }
+
+        Achievement[] nodes = new JSONFileParser().parse(
+            context.getAssets().open(Assets.ACHIEVEMENTS),
+            Achievement[].class
+        );
+
+        _cachedAchievements.addAll(Arrays.asList(nodes));
+
+        return nodes;
     }
 
     private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context) throws IOException {
