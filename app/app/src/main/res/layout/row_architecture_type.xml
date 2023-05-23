@@ -29,7 +29,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/row_gradient"
             android:layout_width="match_parent"
             android:layout_height="50pt"
             android:src="@drawable/card_background_gradient" />
