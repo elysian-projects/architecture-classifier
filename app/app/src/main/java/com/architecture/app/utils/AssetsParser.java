@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,6 +90,11 @@ public class AssetsParser {
         _cachedAchievements.addAll(Arrays.asList(nodes));
 
         return nodes;
+    }
+
+    public static void resetData(Context context) throws IOException {
+        Files.deleteIfExists(new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA).toPath());
+        Files.deleteIfExists(new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.ACHIEVEMENTS_DATA).toPath());
     }
 
     private static TypeFoundNode[] writeDefaultDataToFileAndGetData(Context context) throws IOException {
