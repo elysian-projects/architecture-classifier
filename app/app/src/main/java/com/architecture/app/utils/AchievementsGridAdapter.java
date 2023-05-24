@@ -1,70 +1,76 @@
 package com.architecture.app.utils;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.architecture.app.R;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.architecture.app.components.dialog.DialogVariant;
+import com.architecture.app.components.dialog.DialogWindow;
+import com.architecture.app.databinding.RowAchievementBinding;
 import com.architecture.app.viewModels.Achievement;
 
-public class AchievementsGridAdapter extends BaseAdapter {
-    private final Achievement[] _achievements;
-    private final Context _context;
-    private LayoutInflater _inflater;
+import java.io.IOException;
 
-    public AchievementsGridAdapter(Achievement[] achievements, Context context) {
+public class AchievementsGridAdapter extends RecyclerView.Adapter<AchievementsGridAdapter.AchievementsViewHolder> {
+    private final Achievement[] _achievements;
+
+    public AchievementsGridAdapter(Achievement[] achievements) {
         _achievements = achievements;
-        _context = context;
+    }
+
+    public static class AchievementsViewHolder extends RecyclerView.ViewHolder {
+        public final RowAchievementBinding binding;
+
+        public AchievementsViewHolder(RowAchievementBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+
+    @NonNull
+    @Override
+    public AchievementsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        RowAchievementBinding binding = RowAchievementBinding.inflate(inflater, parent, false);
+
+        return new AchievementsViewHolder(binding);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull AchievementsViewHolder holder, int position) {
+        Achievement achievement = _achievements[position];
+        Context context = holder.itemView.getContext();
+
+        DialogWindow dialog = new DialogWindow(context);
+
+        loadImageToRow(holder.binding.achievementImagePreview, achievement.preview, context);
+
+        holder.binding.achievementImagePreview.setOnClickListener(view -> {
+            try {
+                dialog.setVariant(DialogVariant.INFO, context)
+                    .setTitle(achievement.label)
+                    .setMessage(achievement.description)
+                    .setIcon(AssetsParser.readPreviewImage(context, achievement.preview))
+                    .show();
+            } catch (IOException exception) {
+                Log.w("AchievementsFragment", "Could not load a preview image", exception);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
         return _achievements.length;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
-        if(_inflater == null) {
-            _inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        if(view == null) {
-            view = _inflater.inflate(R.layout.row_achievement, null);
-        }
-
-        TextView label = view.findViewById(R.id.achievement_label);
-        ImageView preview = view.findViewById(R.id.achievement_image_preview);
-
-        preview.setClipToOutline(true);
-        preview.setClipBounds(new Rect(10, 0, 0, 0));
-
-        Achievement currentAchievement = _achievements[position];
-
-        label.setText(currentAchievement.label);
-        loadImageToRow(preview, currentAchievement.preview);
-
-        return view;
-    }
-
-    private void loadImageToRow(ImageView imageView, String preview) {
+    private void loadImageToRow(ImageView imageView, String preview, Context context) {
         try {
-            imageView.setImageBitmap(AssetsParser.readPreviewImage(_context, preview));
+            imageView.setImageBitmap(AssetsParser.readPreviewImage(context, preview));
         } catch(Exception exception) {
             Log.i("AchievementsFragment", "Could not load a preview image", exception);
         }

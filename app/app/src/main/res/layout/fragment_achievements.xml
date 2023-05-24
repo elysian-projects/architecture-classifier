@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.fragments.AchievementsFragment"
     android:id="@+id/achievements_grid_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:columnWidth="125dp"
-    android:horizontalSpacing="5dp"
-    android:layout_marginBottom="5dp"
-    android:scrollbars="vertical"
-    android:verticalSpacing="5dp"
-    android:numColumns="2"
-    android:orientation="vertical" />
+    android:layout_height="match_parent"
+    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    tools:listitem="@layout/row_achievement"
+    android:layout_gravity="center_horizontal"
+    tools:itemCount="10"
+    tools:orientation="vertical"
+    tools:scrollbars="vertical"
+    tools:spanCount="3" />
