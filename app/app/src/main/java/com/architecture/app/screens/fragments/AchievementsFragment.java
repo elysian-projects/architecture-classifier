@@ -1,26 +1,20 @@
 package com.architecture.app.screens.fragments;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
-import com.architecture.app.databinding.AchievementNotificationBinding;
 import com.architecture.app.databinding.FragmentAchievementsBinding;
 import com.architecture.app.utils.AchievementsGridAdapter;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.viewModels.Achievement;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
