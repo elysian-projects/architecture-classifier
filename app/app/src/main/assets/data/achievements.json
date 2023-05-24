@@ -2,51 +2,61 @@
   {
     "label": "А вы видели мумию?",
     "description": "Найти 3 египетских стиля",
-    "preview": "achievements/mummy.jpg"
+    "preview": "achievements/mummy.jpg",
+    "condition": "ancient_egypt.3"
   },
   {
     "label": "Фараон",
     "description": "Найти 10 египетских стилей",
-    "preview": "achievements/pharaoh.jpg"
+    "preview": "achievements/pharaoh.jpg",
+    "condition": "ancient_egypt.10"
   },
   {
     "label": "Это искусство!",
     "description": "Найти 5 борокко",
-    "preview": "achievements/art.jpg"
+    "preview": "achievements/art.jpg",
+    "condition": "baroque.5"
   },
   {
     "label": "Папа Римский",
     "description": "Найти 10 борокко",
-    "preview": "achievements/papa.jpg"
+    "preview": "achievements/papa.jpg",
+    "condition": "baroque.10"
   },
   {
     "label": "В мире майнкрафт",
     "description": "Найти 5 панелек",
-    "preview": "achievements/house.jpg"
+    "preview": "achievements/house.jpg",
+    "condition": "panels.5"
   },
   {
     "label": "Гордость Советского Союза",
     "description": "Найти 10 панелек",
-    "preview": "achievements/siblings.jpg"
+    "preview": "achievements/siblings.jpg",
+    "condition": "panels.10"
   },
   {
     "label": "Иван Васильевич меняет профессию",
     "description": "Найти 3 российского возрождения",
-    "preview": "achievements/ivan.jpg"
+    "preview": "achievements/ivan.jpg",
+    "condition": "russian_revival.3"
   },
   {
     "label": "А медведи с балалайками будут?",
     "description": "Найти 10 российского возрождения",
-    "preview": "achievements/bear.jpg"
+    "preview": "achievements/bear.jpg",
+    "condition": "russian_revival.10"
   },
   {
     "label": "Минотавр не пробегал?",
     "description": "Найти 3 древнегреческих",
-    "preview": "achievements/minotaur.jpg"
+    "preview": "achievements/minotaur.jpg",
+    "condition": "greek_revival.3"
   },
   {
     "label": "Аполлон",
     "description": "Найти 10 древнегреческих",
-    "preview": "achievements/apollon.jpg"
+    "preview": "achievements/apollon.jpg",
+    "condition": "greek_revival.10"
   }
 ]
