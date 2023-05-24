@@ -17,19 +17,23 @@ import com.architecture.app.components.dialog.ButtonClickHandler;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
 import com.architecture.app.components.dialog.DialogWindowSingleButtonsLayout;
+import com.architecture.app.constants.Assets;
 import com.architecture.app.databinding.FragmentUploadBinding;
 import com.architecture.app.image.ImageLoaderFactory;
 import com.architecture.app.image.RequestCodes;
 import com.architecture.app.model.ModelLoader;
 import com.architecture.app.model.ModelResponse;
 import com.architecture.app.permission.PermissionNotGrantedException;
+import com.architecture.app.utils.AssetsAchievements;
 import com.architecture.app.utils.AssetsParser;
+import com.architecture.app.viewModels.AcquiredAchievementNode;
 import com.architecture.app.viewModels.ArchitectureNode;
 import com.architecture.app.viewModels.TypeFoundNode;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class UploadFragment extends Fragment {
     private FragmentUploadBinding _binding;
@@ -104,7 +108,8 @@ public class UploadFragment extends Fragment {
         ModelResponse response = modelLoader.classifyImage(image, requireContext());
 
         if(response.ok()) {
-            increaseFoundNodeCounter(response.node());
+            int foundTimes = increaseFoundNodeCounter(response.node());
+            checkAchievement(response.node(), foundTimes);
         }
 
         setTextInfo(response);
@@ -115,20 +120,40 @@ public class UploadFragment extends Fragment {
         return AssetsParser.parseTypesFoundData(requireContext());
     }
 
-    private void increaseFoundNodeCounter(ArchitectureNode node) {
+    private int increaseFoundNodeCounter(ArchitectureNode node) {
         try {
             TypeFoundNode[] foundNodes = getFoundNodes();
+            int foundTimes = 0;
 
             for(TypeFoundNode foundNode : foundNodes) {
                 if(foundNode.value.equalsIgnoreCase(node.value)) {
                     foundNode.increase();
+                    foundTimes = foundNode.foundTimes;
                     break;
                 }
             }
 
-            AssetsParser.writeFoundNodes(requireContext(), foundNodes);
+            AssetsParser.writeNodes(requireContext(), foundNodes, Assets.TYPES_FOUND_DATA);
+            return foundTimes;
         } catch(IOException exception) {
             Log.i("UploadActivity", "Increasing counter failed", exception);
+            return 0;
+        }
+    }
+
+    private void checkAchievement(ArchitectureNode node, int foundTimes) {
+        try {
+            String candidateCondition = String.format(Locale.getDefault(), "%s.%d", node.value, foundTimes);
+            AcquiredAchievementNode[] achievementNodes = AssetsAchievements.parseAcquiredAchievementsData(requireContext());
+
+            for(AcquiredAchievementNode achievementNode : achievementNodes) {
+                if(candidateCondition.equalsIgnoreCase(achievementNode.condition) && !achievementNode.acquired) {
+                    AcquiredAchievementNode.triggerNewAchievement(requireContext(), requireView(), achievementNodes, candidateCondition);
+                    return;
+                }
+            }
+        } catch(IOException exception) {
+            Log.w("UploadFragment", "Checking achievement failed", exception);
         }
     }
 

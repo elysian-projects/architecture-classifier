@@ -28,8 +28,8 @@ public class AssetsParser {
         return BitmapFactory.decodeStream(context.getAssets().open("previews/" + image));
     }
 
-    public static void writeFoundNodes(Context context, TypeFoundNode[] foundNodes) throws IOException {
-        File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), Assets.TYPES_FOUND_DATA);
+    public static <T> void writeNodes(Context context, T[] foundNodes, String path) throws IOException {
+        File storageData = new File(context.getExternalFilesDir("").getAbsolutePath(), path);
 
         String data = new Gson().toJson(foundNodes);
 
@@ -38,7 +38,7 @@ public class AssetsParser {
             fileWriter.flush();
         }
 
-        Log.i("AssetsParser", "Successfully wrote found nodes:");
+        Log.i("AssetsParser", "Successfully wrote data:");
         Log.i("AssetsParser", data);
     }
 
@@ -99,7 +99,7 @@ public class AssetsParser {
 
         TypeFoundNode[] foundNodesAsArray = getArrayWithDefaultObjects(architectureNodes);
 
-        writeFoundNodes(context, foundNodesAsArray);
+        writeNodes(context, foundNodesAsArray, Assets.TYPES_FOUND_DATA);
 
         return foundNodesAsArray;
     }

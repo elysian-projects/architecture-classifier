@@ -49,38 +49,4 @@ public class AchievementsFragment extends Fragment {
 
         return _binding.getRoot();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        openSnackBar(new Achievement("Label", "Desc", "achievements/art.jpg"), requireContext());
-    }
-
-    private void openSnackBar(Achievement achievement, Context context) {
-        Snackbar snackbar = Snackbar.make(requireView(), "", Snackbar.LENGTH_LONG);
-        AchievementNotificationBinding snackBinding = AchievementNotificationBinding.inflate(LayoutInflater.from(context), null, false);
-
-        View view = snackbar.getView();
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-        params.gravity = Gravity.TOP;
-
-        view.setLayoutParams(params);
-        view.setBackgroundColor(Color.TRANSPARENT);
-
-        snackBinding.achievementNotificationLabel.setText(achievement.label);
-        snackBinding.achievementNotificationDescription.setText(achievement.description);
-
-        snackbar.setBackgroundTint(0XFFFFFF);
-        snackbar.setDuration(5000);
-
-        try {
-            snackBinding.achievementNotificationImagePreview.setImageBitmap(AssetsParser.readPreviewImage(context, achievement.preview));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        ((Snackbar.SnackbarLayout) snackbar.getView()).addView(snackBinding.getRoot(), 0);
-
-        snackbar.show();
-    }
 }
