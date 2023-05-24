@@ -3,16 +3,20 @@ package com.architecture.app.utils;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.architecture.app.R;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
+import com.architecture.app.databinding.AchievementNotificationBinding;
 import com.architecture.app.databinding.RowAchievementBinding;
 import com.architecture.app.viewModels.Achievement;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 
@@ -57,8 +61,8 @@ public class AchievementsGridAdapter extends RecyclerView.Adapter<AchievementsGr
                     .setMessage(achievement.description)
                     .setIcon(AssetsParser.readPreviewImage(context, achievement.preview))
                     .show();
-            } catch (IOException exception) {
-                Log.w("AchievementsFragment", "Could not load a preview image", exception);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }
