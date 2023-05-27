@@ -3,6 +3,8 @@ package com.architecture.app.components.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +58,18 @@ public class DialogWindow {
 
     public DialogWindow setMessage(String message) {
         _messageText.setText(message);
+
+        return this;
+    }
+
+    public DialogWindow setIcon(Drawable icon) {
+        _icon.setImageDrawable(icon);
+
+        return this;
+    }
+
+    public DialogWindow setIcon(Bitmap icon) {
+        _icon.setImageBitmap(icon);
 
         return this;
     }
