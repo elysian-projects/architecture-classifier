@@ -41,7 +41,7 @@
             android:layout_margin="15dp"
             android:background="@drawable/tag_background"
             android:minWidth="50dp"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="bottom|end|center"
             android:textAlignment="center"
             android:text=""
             android:textColor="@color/white"
