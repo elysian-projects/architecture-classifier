@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Лёгкий тест",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "preview": "tests/easy.jpeg",
+    "difficulty": "Easy"
+  },
+  {
+    "label": "Средний тест",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "preview": "tests/medium.jpg",
+    "difficulty": "Medium"
+  },
+  {
+    "label": "Сложный тест",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "preview": "tests/hard.jpg",
+    "difficulty": "Hard"
+  },
+  {
+    "label": "Легендарный тест",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "preview": "tests/legend.jpeg",
+    "difficulty": "Legend"
+  },
+  {
+    "label": "Рандомный тест",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "preview": "tests/random.jpg",
+    "difficulty": "Random"
+  }
+]

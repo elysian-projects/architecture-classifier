@@ -1,11 +1,12 @@
 package com.architecture.app.screens.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.architecture.app.R;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
+import com.architecture.app.databinding.RowArchitectureTypeBinding;
+import com.architecture.app.databinding.FragmentHomeBinding;
 import com.architecture.app.utils.AssetsParser;
 import com.architecture.app.utils.Localization;
 import com.architecture.app.viewModels.ArchitectureNode;
@@ -37,29 +39,30 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        _homeScreenModel = new HomeScreenViewModel(requireContext());
+        _homeScreenModel = new HomeScreenViewModel();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater);
 
-        _linearLayout = rootView.findViewById(R.id.linear_layout);
-        _dialog = new DialogWindow(getContext());
+        _linearLayout = binding.linearLayout;
+        _dialog = new DialogWindow(requireContext());
 
-        getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
-            if(event == Lifecycle.Event.ON_RESUME) {
-                clearLayout();
-                rendersTypesRows();
-            }
-        });
+        return binding.getRoot();
+    }
 
-        return rootView;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        clearLayout();
+        rendersTypesRows();
     }
 
     private void rendersTypesRows() {
         try {
-            HashMap<ArchitectureNode, Integer> layoutData = _homeScreenModel.getLayoutData();
+            HashMap<ArchitectureNode, Integer> layoutData = _homeScreenModel.getLayoutData(requireContext());
 
             for(ArchitectureNode node : layoutData.keySet()) {
                 addNewRow(node, layoutData.get(node));
@@ -78,38 +81,35 @@ public class HomeFragment extends Fragment {
     }
 
     private void addNewRow(ArchitectureNode architectureNode, int foundTimes) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.row_architecture_type, null);
+        RowArchitectureTypeBinding rowArchitectureTypeBinding = RowArchitectureTypeBinding.inflate(getLayoutInflater());
 
-        TextView labelTextView = view.findViewById(R.id.architecture_type_title);
-        TextView foundCountTextView = view.findViewById(R.id.architecture_type_found_count);
-        ImageView previewImageView = view.findViewById(R.id.architecture_type_image_preview);
+        rowArchitectureTypeBinding.architectureTypeTitle.setText(architectureNode.label);
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setText(String.valueOf(foundTimes));
 
-        labelTextView.setText(architectureNode.label);
-        foundCountTextView.setText(String.valueOf(foundTimes));
-
-
-        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO)
+        View.OnClickListener listener = (onClickView) -> _dialog.setVariant(DialogVariant.INFO, requireContext())
                                                                 .setTitle(architectureNode.label)
                                                                 .setMessage(architectureNode.description)
                                                                 .show();
 
-        labelTextView.setOnClickListener(listener);
-        previewImageView.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeTitle.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeImagePreview.setOnClickListener(listener);
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setOnClickListener(onClickView ->
+            showToastWithFoundAmount(architectureNode.label, foundTimes)
+        );
 
-        foundCountTextView.setOnClickListener(onClickView -> {
-            showToastWithFoundAmount(architectureNode.label, foundTimes);
-        });
+        GradientDrawable difficultyBackground = (GradientDrawable) rowArchitectureTypeBinding.architectureTypeFoundCount.getBackground();
+        difficultyBackground.setColor(ContextCompat.getColor(requireContext(), R.color.blue));
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setBackground(difficultyBackground);
 
-        loadImageToRow(previewImageView, architectureNode.preview);
-
-        _linearLayout.addView(view);
+        loadImageToRow(rowArchitectureTypeBinding.architectureTypeImagePreview, architectureNode.preview);
+        _linearLayout.addView(rowArchitectureTypeBinding.getRoot());
 
         Log.i("HomeFragment", "Added node: " + architectureNode.value);
     }
 
     @SuppressLint("DefaultLocale")
     private void showToastWithFoundAmount(String label, int foundCount) {
-        Toast.makeText(getContext(),
+        Toast.makeText(requireContext(),
             String.format(
                 "Вы обнаружили %s %d %s",
                 label, foundCount, Localization.chooseProperEnding(foundCount, "раз", "раза", "раз")

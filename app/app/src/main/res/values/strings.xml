@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Architecture classifier</string>
+    <string name="app_name">ArchiGenius</string>
     <string name="camera">Camera</string>
     <string name="gallery_upload_button_value">Галерея</string>
     <string name="camera_upload_button_value">Камера</string>

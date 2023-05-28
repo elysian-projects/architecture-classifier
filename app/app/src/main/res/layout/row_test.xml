@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:padding="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/test_image_preview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/RoundedSquare"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/test_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/test_image_preview"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/test_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="270dp"
+        android:layout_marginStart="10dp"
+        android:text="Description"
+        android:lines="2"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/test_image_preview"
+        app:layout_constraintTop_toBottomOf="@+id/test_label" />
+
+    <TextView
+        android:id="@+id/test_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tag_background"
+        android:minWidth="50dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="Difficulty"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/test_image_preview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

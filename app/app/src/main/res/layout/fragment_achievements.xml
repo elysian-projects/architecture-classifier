@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/achievements_grid_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_light"
-    tools:context=".screens.fragments.AchievementsFragment">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Check Fragment"
-        android:textSize="100px"
-        android:layout_gravity="center"/>
-
-</FrameLayout>
+    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    tools:listitem="@layout/row_achievement"
+    android:layout_gravity="center_horizontal"
+    tools:itemCount="10"
+    tools:orientation="vertical"
+    tools:scrollbars="vertical"
+    tools:spanCount="3" />

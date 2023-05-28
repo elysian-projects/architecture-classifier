@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.architecture.app.permission.Permissions;
+
+import org.jetbrains.annotations.NotNull;
 
 public class CameraImageLoader extends AbstractImageLoader {
     private static final String REGISTRY_KEY = "CameraImageLoader";
@@ -18,23 +21,23 @@ public class CameraImageLoader extends AbstractImageLoader {
 
     private final ActivityResultLauncher<Intent> _takePhotoLauncher;
 
-    public CameraImageLoader(ActivityResultRegistry activityResultRegistry, Context context) {
-        super(activityResultRegistry, context);
+    public CameraImageLoader(ActivityResultRegistry activityResultRegistry) {
+        super(activityResultRegistry);
 
         _takePhotoLauncher = getRegistry().register(REGISTRY_KEY, new ActivityResultContracts.StartActivityForResult(), success -> {
             try {
                 _callback.run((Bitmap)success.getData().getExtras().get("data"));
             } catch(Exception exception) {
-                _callback.run(null);
+                Log.i("CameraImageLoader", "Could not load image!", exception);
             }
         });
     }
 
     @Override
-    public void runLoader(LoaderCallback callback) {
+    public void runLoader(LoaderCallback callback, @NotNull Context context) {
         _callback = callback;
 
-        new Permissions().grantPermission(Permissions.CAMERA, getContext(), getRegistry(), isGranted -> {
+        new Permissions().grantPermission(Permissions.CAMERA, context, getRegistry(), isGranted -> {
             if(isGranted) {
                 _takePhotoLauncher.launch(getCameraLoadIntent());
             }
