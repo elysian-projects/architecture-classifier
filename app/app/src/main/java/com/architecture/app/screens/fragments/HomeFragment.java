@@ -1,9 +1,11 @@
 package com.architecture.app.screens.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.architecture.app.R;
 import com.architecture.app.components.dialog.DialogVariant;
 import com.architecture.app.components.dialog.DialogWindow;
 import com.architecture.app.databinding.RowArchitectureTypeBinding;
@@ -93,6 +96,10 @@ public class HomeFragment extends Fragment {
         rowArchitectureTypeBinding.architectureTypeFoundCount.setOnClickListener(onClickView ->
             showToastWithFoundAmount(architectureNode.label, foundTimes)
         );
+
+        GradientDrawable difficultyBackground = (GradientDrawable) rowArchitectureTypeBinding.architectureTypeFoundCount.getBackground();
+        difficultyBackground.setColor(ContextCompat.getColor(requireContext(), R.color.blue));
+        rowArchitectureTypeBinding.architectureTypeFoundCount.setBackground(difficultyBackground);
 
         loadImageToRow(rowArchitectureTypeBinding.architectureTypeImagePreview, architectureNode.preview);
         _linearLayout.addView(rowArchitectureTypeBinding.getRoot());
