@@ -1,5 +1,6 @@
 package com.architecture.app.components;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,12 @@ import com.architecture.app.screens.fragments.HomeFragment;
 import com.architecture.app.screens.fragments.QuestionFragment;
 import com.architecture.app.screens.fragments.UploadFragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Navbar {
+    private static final Map<Class<? extends Fragment>, String> TITLES = new HashMap<>();
+
     public void attachToLayout(AppCompatActivity context) {
         ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(context.getLayoutInflater());
         context.setContentView(binding.getRoot());
@@ -23,34 +29,30 @@ public class Navbar {
     }
 
     private void initializeButtons(ActivityNavbarBinding binding, AppCompatActivity context) {
+        setTitles(context);
         replaceFragment(new HomeFragment(), context.getString(R.string.app_name), context);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragmentToLoad;
-            String title;
 
             switch(item.getItemId()) {
                 case R.id.home:
                     fragmentToLoad = new HomeFragment();
-                    title = context.getString(R.string.app_name);
                     break;
                 case R.id.upload:
                     fragmentToLoad = new UploadFragment();
-                    title = "Загрузка изображений";
                     break;
                 case R.id.check:
                     fragmentToLoad = new AchievementsFragment();
-                    title = "Достижения";
                     break;
                 case R.id.question:
                     fragmentToLoad = new QuestionFragment();
-                    title = "QUIZ";
                     break;
                 default:
                     return false;
             }
 
-            replaceFragment(fragmentToLoad, title, context);
+            replaceFragment(fragmentToLoad, TITLES.get(fragmentToLoad.getClass()), context);
 
             return true;
         });
@@ -68,5 +70,14 @@ public class Navbar {
                 Log.w("Navbar", exception.getMessage(), exception);
             }
         });
+    }
+
+    private void setTitles(Context context) {
+        if(TITLES.isEmpty()) {
+            TITLES.put(HomeFragment.class, context.getString(R.string.app_name));
+            TITLES.put(UploadFragment.class, "Загрузка изображений");
+            TITLES.put(AchievementsFragment.class, "Достижения");
+            TITLES.put(QuestionFragment.class, "QUIZ");
+        }
     }
 }
