@@ -20,6 +20,7 @@ import java.util.Map;
 
 public class Navbar {
     private static final Map<Class<? extends Fragment>, String> TITLES = new HashMap<>();
+    private static final Map<Integer, Fragment> FRAGMENTS = new HashMap<>();
 
     public void attachToLayout(AppCompatActivity context) {
         ActivityNavbarBinding binding = ActivityNavbarBinding.inflate(context.getLayoutInflater());
@@ -29,29 +30,11 @@ public class Navbar {
     }
 
     private void initializeButtons(ActivityNavbarBinding binding, AppCompatActivity context) {
-        setTitles(context);
+        setupStaticData(context);
         replaceFragment(new HomeFragment(), context.getString(R.string.app_name), context);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment fragmentToLoad;
-
-            switch(item.getItemId()) {
-                case R.id.home:
-                    fragmentToLoad = new HomeFragment();
-                    break;
-                case R.id.upload:
-                    fragmentToLoad = new UploadFragment();
-                    break;
-                case R.id.check:
-                    fragmentToLoad = new AchievementsFragment();
-                    break;
-                case R.id.question:
-                    fragmentToLoad = new QuestionFragment();
-                    break;
-                default:
-                    return false;
-            }
-
+            Fragment fragmentToLoad = FRAGMENTS.get(item.getItemId());
             replaceFragment(fragmentToLoad, TITLES.get(fragmentToLoad.getClass()), context);
 
             return true;
@@ -72,12 +55,19 @@ public class Navbar {
         });
     }
 
-    private void setTitles(Context context) {
+    private void setupStaticData(Context context) {
         if(TITLES.isEmpty()) {
             TITLES.put(HomeFragment.class, context.getString(R.string.app_name));
             TITLES.put(UploadFragment.class, "Загрузка изображений");
             TITLES.put(AchievementsFragment.class, "Достижения");
             TITLES.put(QuestionFragment.class, "QUIZ");
+        }
+
+        if(FRAGMENTS.isEmpty()) {
+            FRAGMENTS.put(R.id.home, new HomeFragment());
+            FRAGMENTS.put(R.id.upload, new UploadFragment());
+            FRAGMENTS.put(R.id.check, new AchievementsFragment());
+            FRAGMENTS.put(R.id.question, new QuestionFragment());
         }
     }
 }
